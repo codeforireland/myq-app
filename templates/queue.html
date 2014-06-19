@@ -1,0 +1,105 @@
+<script id="queues_tpl" type="x-tmpl-mustache">
+
+    <ul class="list-group">
+        {{#queues}}
+            <li id="{{queueId}}" class="list-group-item">
+                <a href="?queue={{queueId}}"><h1><u>{{name}}</u></h1><img class="img-responsive img-thumbnail" src="images/{{queueId}}_lg@2x.jpg" /></a>
+                <address></address>
+            </li>
+        {{/queues}}
+    </ul>
+
+</script>
+
+<script id="queue_address_tpl" type="x-tmpl-mustache">
+    <p>{{description}}</p>
+    <div class="address"><span class="glyphicon glyphicon-home"></span> {{address.addressLine1}}, {{address.townOrCity}} {{address.postcode}}</div>
+    <span class="glyphicon glyphicon-phone"></span> <a href="tel:{{contactDetails.formattedTelephoneNumber}}">{{contactDetails.displayTelephoneNumber}}</a><br>
+    {{#contactDetails.email}}<span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{contactDetails.email}}" target="_blank">{{contactDetails.email}}</a><br>{{/contactDetails.email}}
+    {{#openingHours}}
+        <span class="glyphicon glyphicon-time"></span> {{day}} {{openingHour}}:{{openingMinute}} - {{closingHour}}:{{closingMinute}}
+    {{/openingHours}}
+    <div class="googleMap">
+    </div>
+</script>
+
+<script id="ticket_form_tpl" type="x-tmpl-mustache">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Your Ticket</h3>
+        </div>
+        <div class="panel-body">
+            <form id="ticketForm">
+                <div class="input-group">
+                    <input type="number" class="form-control" placeholder="What's your ticket number?" name="ticket">
+                    <input type="hidden" name="queue">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default">Go!</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</script>
+
+<script id="service_number_form_tpl" type="x-tmpl-mustache">
+
+    <div id="service-number" class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Who is being served?</h3>
+        </div>
+        <div class="panel-body">
+            <br>
+            <form id="serviceNumberForm">
+                <div class="input-group">
+                    <input type="number" class="form-control" placeholder="Current Service Number?" name="serviceNumber">
+                    <input type="hidden" name="queue">
+                    <input type="hidden" name="ticket">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default">Go!</button>
+                    </span>
+                </div>
+                <p class="help-block">If you can see the monitor, what number is on it right now?</p>
+            </form>
+        </div>
+    </div>
+
+</script>
+
+<script id="service_time_tpl" type="x-tmpl-mustache">
+
+    <div id="service-number" class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Who is being served?</h3>
+        </div>
+        <div class="panel-body">
+            <span class="service-number-led">{{serviceNumber}}</span>
+            <br>
+            <div id="serviceNumber" class="input-group">
+                <input type="number" class="form-control" placeholder="Current Service Number?">
+                <span class="input-group-btn">
+                    <button type="button" data-loading-text="Submitting..." class="btn btn-default">Go!</button>
+                </span>
+            </div>
+            <p class="help-block">If you can see the monitor, what number is on it right now?</p>
+        </div>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Your estimated wait time</h3>
+        </div>
+        <div class="panel-body">
+            <span id="countdown"></span>
+        </div>
+    </div>
+    <div id="ticket-number" class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Your ticket number</h3>
+        </div>
+        <div class="panel-body">
+            <span class="badge">{{ticket}}</span>
+        </div>
+    </div>
+</script>
