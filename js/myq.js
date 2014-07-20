@@ -460,7 +460,7 @@ $(function() {
 
     // See JQuery Mustache API for usage.
     // https://github.com/jonnyreeves/jquery-Mustache/wiki/Api
-    $.Mustache.load('./templates/queue.html').done(function () {
+    $.Mustache.load('./templates/queue.html?1405892731158').done(function () {
         var queue = Util.getQueryParameter('queue');
         var ticket = Util.getQueryParameter('ticket');
         var serviceNumber = Util.getQueryParameter('serviceNumber');
