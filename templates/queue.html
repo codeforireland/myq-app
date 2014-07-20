@@ -12,6 +12,7 @@
 </script>
 
 <script id="queue_address_tpl" type="x-tmpl-mustache">
+
     <p>{{description}}</p>
     <div class="address"><span class="glyphicon glyphicon-home"></span> {{address.addressLine1}}, {{address.townOrCity}} {{address.postcode}}</div>
     <span class="glyphicon glyphicon-phone"></span> <a href="tel:{{contactDetails.formattedTelephoneNumber}}">{{contactDetails.displayTelephoneNumber}}</a><br>
@@ -20,7 +21,10 @@
         <span class="glyphicon glyphicon-time"></span> {{day}} {{openingHour}}:{{openingMinute}} - {{closingHour}}:{{closingMinute}}
     {{/openingHours}}
     <div class="googleMap">
+		<img src="" />
+		<div class="address"><a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}},{{address.addressLine1}},{{address.townOrCity}},{{address.postcode}})?z=17">{{address.name}}</a><br/>{{address.addressLine1}},<br/>{{address.townOrCity}}<br/>{{address.postcode}}</div>
     </div>
+
 </script>
 
 <script id="ticket_form_tpl" type="x-tmpl-mustache">
@@ -102,4 +106,5 @@
             <span class="badge">{{ticket}}</span>
         </div>
     </div>
+
 </script>

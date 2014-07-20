@@ -1,4 +1,4 @@
-function Util () {};
+function Util () {}
 
 /**
  * Display a message to the user that will fade out or they can dismiss.
@@ -15,6 +15,18 @@ Util.notify = function(selector, type) {
             delay: 10000
         }
     }).show();
+};
+
+/**
+ * Scroll element into view.
+ */
+Util.scrollToElement = function(element) {
+	var body = $('html, body'); // 'html' required for IE compatibility.
+	var scrollTo = $(element.href.substr(element.href.indexOf('#')));
+	var offset = scrollTo.offset().top - $('.container').offset().top;
+	body.animate({
+		scrollTop: offset
+	}, 400);
 };
 
 /**
@@ -99,10 +111,6 @@ Util.getQueryParameter = function(name) {
  */
 Util.isMobile = function() {
     return $('.device-xs').is(':visible');
-
-
-
-
 };
 
 /**

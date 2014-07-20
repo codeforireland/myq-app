@@ -2,7 +2,8 @@ var MyQ = (function () {
     'use strict';
 
     var api = {
-        queues : 'http://api.prod.queue.appbucket.eu/queues/'
+        queues : 'http://api.prod.queue.appbucket.eu/queues/',
+        feedback: 'http://api.prod.queue.appbucket.eu/feedbacks/'
         //queues: 'responses/'
     },
 
@@ -11,6 +12,123 @@ var MyQ = (function () {
     MAX_WAIT_TIME = 60 * 60 * 60 * 24, // 1 day
 
     DEBUG_TIME = $.now() + (60 * 10 * 1000), // 10 minutes
+
+    controlFeedbackForm = function() {
+		// Handle Feedback menu.
+        $('.feedback').click(function(e) {
+            e.preventDefault();
+            $('.navbar-toggle:visible').click(); // hide menu
+
+			// If feedback form visible scroll to it.
+			if($('#feedback').is(':visible')) {
+				Util.scrollToElement(e.target);
+			}
+
+			// Toggle feedback form visibility.
+            $('#feedback').fadeToggle(function() {
+				if(!$(this).is(':visible')) {
+					// Clear out form.
+					$('#feedback #cancel').trigger('click');
+				} else {
+					// Wait until feedback form is visible and then scroll to it.
+					Util.scrollToElement(e.target);
+				}
+			});
+        });
+
+		// Auto increase the size of the input area.
+        $('#feedback textarea').autosize();
+
+		// Restrict the amout of text that can be entered.
+		$('textarea.form-control').maxlength({
+			alwaysShow: true,
+			warningClass: "label label-info",
+			limitReachedClass: "label label-warning",
+			placement: 'top'
+		});
+
+		// Required for defect on Nexus 5 as max length is ignored.
+		$('textarea').on('keydown', function(e) {
+			var textarea = $(this);
+			if(textarea.val().length > textarea.attr('maxLength')) {
+				textarea.val(textarea.val().substring(0, textarea.attr('maxLength')));
+				e.preventDefault();
+				return false;
+			}
+		});
+
+		// Handle feedback 'cancel' button.
+        $('#feedback #cancel').on('click', function(e) {
+            e.preventDefault();
+            $('#feedback').fadeOut(function() {
+				$('input.rating').val('0'); // star rating input.
+				$('.glyphicon-star').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+				$('#feedback textarea').val('');
+			});
+        });
+
+		// Handle feedback 'submit' button.
+        $('#feedback #submit').on('click', function(e) {
+            e.preventDefault();
+
+			// Validate feedback form. Must have either
+			// a star rating or a comment.
+			var starRating = $('#feedback input').val();
+			var feedbackText = $('#feedback textarea').val();
+			if(starRating == '0' && feedbackText === '') {
+				$('#feedback').addClass('invalid');
+				setTimeout(function() {
+					$('#feedback').removeClass('invalid');
+				}, 600);
+
+				return;
+			}
+
+            var goButton = $(this);
+            goButton.button('loading');
+            goButton.addClass('btn-success');
+
+			var payload = {
+				comment: feedbackText
+			};
+
+			if(starRating != "0") {
+				payload.rating = starRating;
+			}
+
+			// Don't allow form to be edited while form is being submitted.
+			$('.form-inline').addClass('mask');
+
+			// Post Feedback.
+            $.ajax({
+                type: 'POST',
+                headers: {
+                   'Content-Type': 'application/json;charset=UTF-8'
+                },
+                url: api.feedback,
+                //dataType: 'json',
+                data: JSON.stringify(payload)
+            }).done(function(response) {
+				$('#feedback').fadeOut(function() {
+					$('input.rating').val('0'); // star rating input.
+					$('.glyphicon-star').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
+					$('#feedback textarea').val('');
+					setTimeout(function() {
+						Util.notify('#feedback-sent');
+					}, 400);
+				});
+            }).fail(function(response) {
+                Util.notify('#no-service', 'danger');
+            }).always(function() {
+                if(typeof goButton !== 'undefined') {
+                    goButton.button('reset');
+                    goButton.removeClass('btn-success');
+                }
+
+				$('.form-inline').removeClass('mask');
+            });
+        });
+    },
 
     controlQueueList = function() {
         // Save queue name on queue selection.
@@ -73,7 +191,7 @@ var MyQ = (function () {
     controlServiceNumberInput = function(queue, ticket) {
         // Ajax Submit on Go button pressed.
         $('#serviceNumber button').on('click', function() {
-            var goButton = $(this)
+            var goButton = $(this);
             goButton.button('loading');
             goButton.addClass('btn-success');
 
@@ -166,7 +284,7 @@ var MyQ = (function () {
                 });
 
                 // Display Queues
-                $('.container').mustache('queues_tpl', {queues: response}, {method: 'prepend' });
+                $('#queues').mustache('queues_tpl', {queues: response}, {method: 'prepend' });
                 controlQueueList();
 
                 // Display Queue Details
@@ -203,38 +321,43 @@ var MyQ = (function () {
 
                         $('li#' + _element.queueId + ' address').mustache('queue_address_tpl', details);
 
-                        var mapEl = $('li#' + _element.queueId + ' .googleMap');
-                        var location = new google.maps.LatLng(details.location.latitude, details.location.longitude);
-                        var map = new google.maps.Map(mapEl.get(0), {
-                            center: location,
-                            zoom: 15,
-                            mapTypeId: google.maps.MapTypeId.ROADMAP
-                        });
+						// Get static Google map of office location.
+						var googleMapEl = $('li#' + _element.queueId + ' .googleMap');
+						var googleMapImg = $('img', googleMapEl);
+						var googleMap = {
+							url: 'http://maps.googleapis.com/maps/api/staticmap?center=',
+							latitude: details.location.latitude,
+							longitude: details.location.longitude,
+							width: $('body').width(),
+							height : Math.floor($('body').width()/(16/9)), // use 16:9 aspect ratio
+							markers: 'color:red%7C',
+							key: 'AIzaSyDefOx_1uZiXgBWTfa3SABcl60rRRJdSCE',
+							zoom: 14,
 
-                        mapEl.height(mapEl.width() / (16/9));
+							toString: function() {
+								return this.url + this.latitude + ',' + this.longitude +
+									'&size=' + this.width + 'x' + this.height +
+									'&markers=color:red%7C' + this.latitude + ',' + this.longitude +
+									'&zoom=' + this.zoom +
+									'&key=' + this.key;
+							}
+						};
+						googleMapImg.attr('src', googleMap);
 
-                        mapEl.on('orientationChange', function() {
-                            mapEl.height(mapEl.width() / (16/9));
-                            google.maps.event.trigger(map, 'resize');
-                        });
+						// Centre address overlay.
+						var address = $('.address', googleMapEl);
+						address.css('margin-top', -address.height()/2);
+						address.css('margin-left', -address.width()/2);
 
-                        var marker = new google.maps.Marker({
-                            map: map,
-                            animation: google.maps.Animation.DROP,
-                            position: location
-                        });
-
-                        var address = $('li#' + _element.queueId + ' .address ').text().trim();
-                        var infowindow = new google.maps.InfoWindow({
-                            content: _element.name + '<br><a href="geo:0,0?q=' + details.location.latitude + ',' + details.location.longitude + '(' + _element.name + ',' + address + ')?z=17">' + address + '</a>'
-                        });
-
-                        // TODO Make address tappable to open native map.
-
-                        google.maps.event.addListener(marker, 'click', function() {
-                            infowindow.open(map, marker);
-                        });
-
+						// Toggle address on click.
+						googleMapEl.click(function(e) {
+							var opacity = address.css('opacity');
+							if(opacity == 0) {
+								// Prevent anchor working until address is visible.
+								e.preventDefault();
+							}
+							address.animate({opacity: (opacity == 1 ? 0 : 1)});
+						});
                     }).fail(function(response) {
                         Util.notify('#no-service', 'danger');
                     });
@@ -246,6 +369,9 @@ var MyQ = (function () {
                 $('.navbar-collapse').removeClass('hidden');
                 $('#about').removeClass('hidden');
                 $('.disclaimer').removeClass('hidden');
+
+				// Capture user feedback.
+				controlFeedbackForm();
             }).fail(function(response) {
                 Util.notify('#no-service', 'danger');
             });
@@ -375,24 +501,19 @@ $(function() {
             MyQ.displayQueues();
 
             // On menu selection scroll to section.
-            $('.navbar-collapse ul li a').click(function(e) {
+            $('.navbar-collapse ul li a.scroll').click(function(e) {
                 e.preventDefault();
-                $('.navbar-toggle:visible').click();
+                $('.navbar-toggle:visible').click(); // Close menu
 
-                var body = $('html, body'); // 'html' required for IE compatibility.
-                var scrollTo = $(e.target.href.substr(e.target.href.indexOf('#')));
-                var offset = scrollTo.offset().top - $('.container').offset().top;
-                body.animate({
-                    scrollTop: offset
-                }, 1000);
+				Util.scrollToElement(e.target);
             });
 
-            // Close dropdown menu if clicked outside.
-            $('.container').click(function() {
-                if($('.navbar-collapse.navbar-right.collapse.in').is(':visible')) {
-                    $('.collapse').collapse('hide');
-                }
-            });
+			// Close dropdown menu if clicked outside.
+			$('.container').click(function() {
+				if($('.navbar-collapse.navbar-right.collapse.in').is(':visible')) {
+					$('.collapse').collapse('hide');
+				}
+			});
 
             // Display Disclaimer Text
             $('.disclaimer').click(function() {
@@ -401,18 +522,19 @@ $(function() {
                 } else {
                     $('.disclaimer-content').fadeOut(function() {
                         setTimeout(function() {
-                            $('body').animate({
+                            $('html, body').animate({
                                 scrollTop: 0
-                            }, 1000);
-                        }, 500);
+                            });
+                        }, 500); // Wait for a moment to improve UX.
                     });
                 }
             });
 
+			// Handle 'top' links
             $('.top').click(function() {
                 $('html, body').animate({ // 'html' required for IE compatibility.
                     scrollTop: 0
-                }, 1000);
+                });
             });
 
             // Keep map in 16:9 aspect ratio.
