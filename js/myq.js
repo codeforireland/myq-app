@@ -291,7 +291,7 @@ var MyQ = (function () {
                 response.forEach(function(element) {
                     var _element = element;
                     $.ajax({
-                        url: api.queues + '/' + element.queueId,
+                        url: api.queues + element.queueId,
                         //url: api.queues + 'queue_' + element.queueId +'.json',
                         cache: false
                     }).done(function(details) {
