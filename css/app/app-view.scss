@@ -1,0 +1,32 @@
+.app-view {
+	>.container {
+    	margin-top: 70px;
+	}
+}
+
+.notifications {
+	&.top-left {
+    	left: 0;
+    	top: 4em;
+    	z-index: 3;
+	}
+
+	>div {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+
+	.close.pull-right {
+		margin-left: 5px;
+	}
+
+	/* Increase tap area */
+	.close:before {
+		content: ' ';
+		height: 3em;
+		width: 4em;
+		position: absolute;
+		right: -1em;
+		top: 0;
+	}
+}

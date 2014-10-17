@@ -1,0 +1,14 @@
+.disclaimer {
+	.disclaimer-link {
+		text-align: right;
+		text-decoration: underline;
+		margin-bottom: 1em;
+		font-size: 0.9em;
+		cursor: pointer;
+	}
+
+	.disclaimer-content {
+		display: none;
+		font-size: 0.8em;
+	}
+}

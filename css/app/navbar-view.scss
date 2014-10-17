@@ -1,0 +1,26 @@
+.navbar {
+	.navbar-header {
+		.navbar-brand {
+			&.back-button {
+				padding: 15px 0 15px 15px;
+				width: 2em;
+				cursor: pointer;
+			}
+
+			&.logo {
+				padding-right: 0;
+				margin-top: -3px;
+
+				img {
+					height: 1.5em;
+				}
+			}
+
+			&.title {
+				padding-left: 5px;
+				margin-left: 0;
+				font-weight: bold;
+			}
+		}
+	}
+}
