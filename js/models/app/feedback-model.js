@@ -1,5 +1,5 @@
 app.FeedbackModel = Backbone.Model.extend({
-	url: function() {
-		return app.feedbackUrl;
-	}
+    url: function() {
+        return app.feedbackUrl;
+    }
 });

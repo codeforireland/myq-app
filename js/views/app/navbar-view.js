@@ -1,33 +1,33 @@
 app.NavbarView = Backbone.View.extend({
 
-	className: 'navbar navbar-fixed-top navbar-default',
+    className: 'navbar navbar-fixed-top navbar-default',
 
-	template: 'navbar-view-tpl',
+    template: 'navbar-view-tpl',
 
-	events : {
-		'click .navbar-collapse ul li a.scroll': 'scrollToSection',
-		'click .feedback': 'showFeedback'
-	},
+    events : {
+        'click .navbar-collapse ul li a.scroll': 'scrollToSection',
+        'click .feedback': 'showFeedback'
+    },
 
-	initialize: function () {
- 		this.render();
-	},
+    initialize: function () {
+         this.render();
+    },
 
-	render: function () {
-	    this.$el.mustache(this.template);
-	},
+    render: function () {
+        this.$el.mustache(this.template);
+    },
 
-	scrollToSection: function(e) {
-		e.preventDefault();
-		this.$('.navbar-toggle:visible').click(); // Close menu
+    scrollToSection: function(e) {
+        e.preventDefault();
+        this.$('.navbar-toggle:visible').click(); // Close menu
 
-		Util.scrollToElement(e.target);
-	},
+        Util.scrollToElement(e.target);
+    },
 
-	showFeedback: function(e) {
-		e.preventDefault();
-		this.$('.navbar-toggle:visible').click(); // Close menu
+    showFeedback: function(e) {
+        e.preventDefault();
+        this.$('.navbar-toggle:visible').click(); // Close menu
 
-		this.trigger('feedback', e);
-	}
+        this.trigger('feedback', e);
+    }
 });

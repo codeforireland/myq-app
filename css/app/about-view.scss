@@ -1,17 +1,17 @@
 #about {
-	.top {
-		text-align: right;
-		margin-right: 1em;
-		text-decoration: underline;
-		cursor: pointer;
-	}
+    .top {
+        text-align: right;
+        margin-right: 1em;
+        text-decoration: underline;
+        cursor: pointer;
+    }
 
-	/* Increase tap area */
-	.top:before {
-		content: ' ';
-		height: 3em;
-		width: 3em;
-		position: absolute;
-		right: 2em;
-	}
+    /* Increase tap area */
+    .top:before {
+        content: ' ';
+        height: 3em;
+        width: 3em;
+        position: absolute;
+        right: 2em;
+    }
 }

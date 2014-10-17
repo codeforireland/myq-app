@@ -1,7 +1,7 @@
 app.QueueCollection = Backbone.Collection.extend({
-	model: app.QueueModel,
+    model: app.QueueModel,
 
-	url: app.queuesUrl,
+    url: app.queuesUrl,
 
-	comparator: 'queueId'
+    comparator: 'queueId'
 });
