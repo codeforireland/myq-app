@@ -8,8 +8,8 @@
 
 // Preview button configuration
   "preview": {
-        "Project Index (static)": "https://{{domain}}/{{index}}",
-        "Current File (static)": "https://{{domain}}/{{filepath}}",
+        "Project Index (static)": "http://{{domain}}/{{index}}",
+        "Current File (static)": "http://{{domain}}/{{filepath}}",
         "Box URL": "http://{{domain}}:3000/",
         "Box URL SSL": "https://{{domain}}:9500/",
         "Visit Ungit": "https://{{domain}}:9501/#/repository?path=/home/codio/workspace"

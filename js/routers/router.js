@@ -2,7 +2,8 @@ app.AppRouter = Backbone.Router.extend({
 
     routes: {
         'q/:id' : 'visitQueue',
-        '*other' : 'visitQueues'
+
+        '*other' : 'visitQueues' // always last route.
     },
 
     initialize: function() {
@@ -39,7 +40,10 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     displayQueue: function(queueCollection, queueId) {
-        this.selectedQueueModel = queueCollection.findWhere({'queueId': parseInt(queueId)});
+        this.selectedQueueModel = queueCollection.find(function(model) {
+            return model.get('queueInfo').queueId === parseInt(queueId);
+        });
+
         if(this.selectedQueueModel) {
             this.switchView(new app.QueueView({model: this.selectedQueueModel}));
         } else {

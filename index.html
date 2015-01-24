@@ -6,21 +6,14 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
         <title>My Q</title>
 
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" type="text/css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css" type="text/css" rel="stylesheet">
 
         <!-- Useful when developing off-line -->
         <!--<link href="lib/bootstrap/css/bootstrap.min.css?1405892731158" type="text/css" rel="stylesheet">-->
         <!--<link href="lib/bootstrap/css/bootstrap-theme.min.css?1405892731158" type="text/css" rel="stylesheet">-->
-
-        <!-- TimeTo - jQuery Plugin -->
-        <!--[if lt IE 9]>
-        <script>
-            document.createElement('figure');
-            document.createElement('figcaption');
-        </script>
-        <![endif]-->
-        <link href="lib/jquery.timeTo/timeTo.min.css?1405892731158" type="text/css" rel="stylesheet">
 
         <link href="lib/bootstrap-notify/bootstrap-notify.min.css?1405892731158" type="text/css" rel="stylesheet">
         <link href="lib/bootstrap-notify/alert-bangtidy.min.css?1405892731158" type="text/css" rel="stylesheet">
@@ -42,6 +35,9 @@
         <div class="device-lg visible-lg"></div>
 
         <div class="notifications top-left"></div>
+
+        <div class="mask">
+        </div>
 
         <div class="app-view">
             <div class="container">
@@ -68,8 +64,9 @@
         <!-- Useful when developing off-line -->
         <!--<script src="lib/jquery/jquery-2.1.0.min.js"></script>-->
         <script src="lib/jquery.mustache/jquery.mustache.min.js?1405892731158"></script>
-        <script src="lib/jquery.timeTo/jquery.timeTo.min.js?1405892731158"></script>
         <script src="lib/mustache/mustache.min.js?1405892731158"></script>
+
+        <script src="lib/countdown.js/countdown.min.js?1405892731158"></script>
 
         <script src="js/app_bootstrap.js?1405892731158"></script>
 
@@ -77,21 +74,18 @@
 
         <script src="js/models/app/feedback-model.js?1405892731158"></script>
 
-        <script src="js/models/queue/queue-detail-model.js?1405892731158"></script>
         <script src="js/models/queue/queue-model.js?1405892731158"></script>
 
         <script src="js/collections/queues/queue-collection.js?1405892731158"></script>
 
         <script src="js/views/app/about-view.js?1405892731158"></script>
         <script src="js/views/app/app-view.js?1405892731158"></script>
-        <script src="js/views/app/disclaimer-view.js?1405892731158"></script>
         <script src="js/views/app/feedback-view.js?1405892731158"></script>
         <script src="js/views/app/navbar-view.js?1405892731158"></script>
 
         <script src="js/views/queue/queue-view.js?1405892731158"></script>
 
         <script src="js/views/queues/queue-item-detail-view.js?1405892731158"></script>
-        <script src="js/views/queues/queue-item-view.js?1405892731158"></script>
         <script src="js/views/queues/queue-list-view.js?1405892731158"></script>
 
         <script src="js/routers/router.js?1405892731158"></script>

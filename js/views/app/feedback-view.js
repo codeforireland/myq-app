@@ -1,29 +1,32 @@
 app.FeedbackView = Backbone.View.extend({
 
-    el: '.container', // Need to add to DOM for ratings component to work.
+    className: 'feedback',
 
     template: 'feedback-view-tpl',
 
     events: {
         'keydown textarea' : 'nexus5Fix',
-        'click #cancel': 'cancel',
-        'click #submit': 'submit'
+        'click .close': 'close',
+        'click .submit': 'submit'
     },
 
     initialize: function() {
-        // View will be rendered to '.container'.
-        this.render();
+        app.navbarView.on('feedback', $.proxy(this.render, this));
+    },
 
-        // Change over element to '#feedback', so callbacks
-        // have correct context.
-        this.setElement(this.$('#feedback'));
+    render: function (container) {
+        Util.showMask();
+
+        this.$el.mustache(this.template);
+
+        this.$el.slideDown();
 
         // Show star rating
         this.$('input').rating();
         this.$input = this.$('input'); // rating control creates a new input, so cache it instead.
 
-         // Auto increase the size of the input area.
-         this.$textarea = this.$('textarea')
+        // Auto increase the size of the input area.
+        this.$textarea = this.$('textarea')
         this.$textarea.autosize();
 
         // Restrict the amout of text that can be entered.
@@ -33,55 +36,15 @@ app.FeedbackView = Backbone.View.extend({
             limitReachedClass: "label label-warning",
             placement: 'top'
         });
-
-        this.listenTo(app.navbarView, 'feedback', this.showFeedback);
     },
 
-    render: function (container) {
-        this.$el.mustache(this.template);
-    },
-
-    nexus5Fix: function(e) {
-        var textarea = this.$textarea;
-        if(textarea.val().length > textarea.attr('maxLength')) {
-            textarea.val(textarea.val().substring(0, textarea.attr('maxLength')));
-            e.preventDefault();
-        }
-    },
-
-    /**
-     * Toggle display of feedback form. This is triggered by the
-     * 'feedback' event from the navbar menu view.
-     **/
-    showFeedback: function(e) {
-        var self = this;
-
-        // If feedback form visible scroll to it.
-        if(self.$el.is(':visible')) {
-            Util.scrollToElement(e.target);
-        }
-
-        // Toggle feedback form visibility.
-        self.$el.fadeToggle(function() {
-            if(!self.$el.is(':visible')) {
-                // Clear out form.
-                self.$('#cancel').trigger('click');
-            } else {
-                // Wait until feedback form is visible and then scroll to it.
-                Util.scrollToElement(e.target);
-            }
-        });
-    },
-
-    // Handle feedback 'cancel' button.
-    cancel: function(e) {
+    close: function(e) {
         e.preventDefault();
-        var self = this;
 
-        this.$el.fadeOut(function() {
-            self.$input.val('0'); // star rating input.
-            self.$('.glyphicon-star').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
-            self.$textarea.val('');
+        var self = this;
+        this.$el.slideUp(function() {
+            self.$el.empty();
+            Util.hideMask();
         });
     },
 
@@ -94,7 +57,7 @@ app.FeedbackView = Backbone.View.extend({
         // a star rating or a comment.
         var starRating = this.$input.val();
         var feedbackText = this.$textarea.val();
-        if(starRating == '0' && feedbackText === '') {
+        if(starRating == '0') {
             this.$el.addClass('invalid');
             setTimeout(function() {
                 self.$el.removeClass('invalid');
@@ -103,12 +66,10 @@ app.FeedbackView = Backbone.View.extend({
             return;
         }
 
-        var goButton = this.$('#submit');
-        goButton.button('loading');
-        goButton.addClass('btn-success');
-
         // Don't allow form to be edited while form is being submitted.
-        var startRequestTime = Util.showMask(this.$('.form-group'), this.$('#submit'));
+        var startRequestTime = Util.showFormMask(this.$('.form-group'), this.$('#submit'));
+
+        var loadTimer = Util.startProgressLoader(this.$el);
 
         // Post Feedback.
         var feedbackModel = new app.FeedbackModel();
@@ -118,13 +79,10 @@ app.FeedbackView = Backbone.View.extend({
             }, {
                 dataType: 'text',
                 success: function() {
-                    self.$el.fadeOut(function() {
-                        self.$input.val('0'); // star rating input.
-                        self.$('.glyphicon-star').removeClass('glyphicon-star').addClass('glyphicon-star-empty');
-                        self.$textarea.val('');
-                        setTimeout(function() {
-                            Util.notify('#feedback-sent');
-                        }, 400);
+                    self.$el.slideUp(function() {
+                        Util.notify('#feedback-sent');
+                        self.$el.empty();
+                        Util.hideMask();
                     });
                 },
                 error: function() {
@@ -132,7 +90,16 @@ app.FeedbackView = Backbone.View.extend({
                 }
             }
         ).always(function() {
-            Util.hideMask(self.$('.form-group'), self.$('#submit'), startRequestTime);
+            Util.hideFormMask(self.$('.form-group'), self.$('#submit'), startRequestTime);
+            Util.stopProgressLoader(self.$el, loadTimer);
         });
+    },
+
+    nexus5Fix: function(e) {
+        var textarea = this.$textarea;
+        if(textarea.val().length > textarea.attr('maxLength')) {
+            textarea.val(textarea.val().substring(0, textarea.attr('maxLength')));
+            e.preventDefault();
+        }
     }
 });

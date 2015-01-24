@@ -1,96 +1,307 @@
 .queue-view {
-    #service-number {
-        margin-top: 8px;
+    color: #666;
 
-        .service-number-led {
-            @at-root {
-                @font-face {
-                    font-family: 'DS-Digital-Bold';
-                    src: url('../fonts/DS-Digital-Bold.woff') format('woff');
+    .header {
+        position: relative;
+
+        .myq-cover {
+            position: relative;
+            padding: 80px 20px 1px 20px;
+
+            background-image: url('../images/myq-cover.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+
+            .title {
+                font-size: 22px;
+            }
+
+            hr {
+                margin: 0;
+                border-color: #868788;
+            }
+
+            .status {
+                padding: 5px 0;
+
+                span {
+                    float: right;
+                    color: rgb(50, 170, 174);
+                    font-size: 20px;
+                    cursor: pointer;
+
+                    transition-duration: 0.5s;
+
+                    &.rotate {
+                        transform: rotate(360deg);
+                    }
+
+                    &:after { /* Increase clickable area. */
+                        content: '';
+                        position: absolute;
+                        width: 60px;
+                        height: 40px;
+                        left: -20px;
+                        top: -10px;
+                    }
+                }
+            }
+        }
+    }
+
+    .inner-content {
+        min-width: 240px;
+        max-width: 500px;
+        margin: auto;
+        position: relative;
+
+        .details {
+            display: none;
+            position: absolute;
+            z-index: 3;
+            left: 0;
+            right: 0;
+
+            .details-holder {
+                background-color: white;
+                margin: 7px;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                border-radius: 3px;
+                padding: 20px;
+
+                .description {
+                    margin-bottom: 15px;
+                }
+
+                a {
+                    color: rgba(66, 139, 202, 0.75);
+                }
+
+                .title {
+                    padding-bottom: 5px;
+                    font-size: 20px;
+                }
+
+                .address {
+                    margin-bottom: 20px;
+                }
+
+                .googleMap img {
+                    width: 100%;
+                    max-width: 640px;
+                }
+
+                .googleMap .overlay {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    margin: auto auto;
+                    text-align: left;
+                    line-height: 1.5em;
+                    background-color: white;
+                    color: #333;
+                    -webkit-border-radius: 0.6em;
+                    padding: 5px;
+                    opacity: 0;
+                    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px;
+                }
+
+                .hours {
+                    margin-top: 20px;
+
+                    td.time {
+                        padding-left: 10px;
+                    }
+                }
+            }
+        }
+
+        .wait-time {
+            display: none;
+            padding: 10px;
+            background-color: white;
+
+            img {
+                float: left;
+                vertical-align: middle;
+                margin: 20px 20px 20px 0px;
+            }
+
+            .title {
+                margin-top: 20px;
+                font-size: 22px;
+            }
+
+            .time-hour, .time-minute, .time-second {
+                font-size: 44px;
+            }
+
+            .time-text {
+                font-size: 24px;
+            }
+        }
+
+        .card {
+            margin: 7px;
+
+            .content {
+                background-color: white;
+                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                border-radius: 3px;
+            }
+        }
+
+        .flip-button {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 23px;
+            height: 14px;
+            background-image: url('/images/back.png');
+            opacity: 0.5;
+            cursor: pointer;
+
+            &::before { /* Increase clickable area. */
+                content: "";
+                position: absolute;
+                bottom: -5px;
+                right: -5px;
+                height: 100px;
+                width: 50px;
+            }
+        }
+
+        .wait-time, .service-number, .ticket-number {
+            .loader {
+                margin: 0;
+                width: 0%;
+                border-top: solid #32AAAE 3px;
+            }
+
+            color: #C0C0C0;
+        }
+
+        .wait-time, .service-number {
+            display: none;
+        }
+
+        .ticket-number-front, .service-number-front {
+            padding: 10px;
+
+            .icon {
+                float: left;
+                vertical-align: middle;
+                margin: 35px 20px 20px 0px;
+            }
+
+            .title {
+                margin-top: 10px;
+                font-size: 22px;
+            }
+
+            .number {
+                font-size: 44px;
+                margin-left: 70px;
+            }
+        }
+
+        .ticket-number {
+            .front, .back {
+                margin-bottom: 7px;
+            }
+        }
+
+        .ticket-number-back, .service-number-back {
+            .ticket-form, .service-form {
+                padding: 20px;
+
+                .header {
+                    font-size: 22px;
+                    margin-bottom: 10px;
+                }
+
+                input {
+                    background-color: #F0F0F0;
+                    border: none;
+                    padding: 15px;
+                    width: 250px;
+                    margin: auto;
+                    display: block;
+                    border-radius: 3px;
+                    max-width: 100%;
+                }
+
+                .submit {
+                    padding: 10px;
+                    text-align: center;
+                    background-color: #32AAAE;
+                    width: 250px;
+                    margin: 20px auto auto auto;
+                    border-radius: 3px;
+                    color: white;
+                    margin-bottom: 5px;
+                    max-width: 100%;
+                    cursor: pointer;
                 }
             }
 
-            font-family: 'DS-Digital-Bold';
-            font-size: 6em;
+            .flip-button {
+                display: none;
+                cursor: pointer;
+            }
+        }
+
+        .notification {
             display: none;
-            line-height: 1;
-        }
+            position: relative;
+            margin-top: -20px;
+            margin-bottom: -20px;
+            z-index: 1;
+            opacity: 0.95;
 
-        .panel-body {
-            padding: 0 15px;
+            .dismiss {
+                position: absolute;
+                top: 25px;
+                right: 10px;
+                color: white;
+                font-weight: bold;
+            }
+
+            .text {
+                padding: 20px;
+                background-color: #C6D67E;
+                color: white;
+                font-size: 18px;
+            }
+
+            .up-arrow {
+                width: 0;
+                margin: auto;
+                border-left: 20px solid transparent;
+                border-right: 20px solid transparent;
+            }
+
+            .up-arrow {
+                border-bottom: 20px solid #C6D67E;
+            }
+
+            &.estimated {
+                position: absolute;
+            }
         }
     }
 
-    #ticket-number {
-        .badge {
-            font-size: 4em;
-            padding-bottom: 0;
+    .form-mask {
+        .input-area {
+            opacity: 0.5;
         }
     }
 
-    #badge, #service-number, #wait-time, #wait-time .estimated {
-        display: none;
-    }
-
-    .mask:before {
+    .form-mask:before {
         content: "";
         height: 100%;
         width: 100%;
         position: absolute;
         z-index: 2;
-    }
-
-    /*
-     * Pluse animation
-    */
-    .pulse {
-        -webkit-animation-name: 'pulse-frames';
-        animation-name: 'pluse_frames';
-        -webkit-animation-duration: 3000ms;
-        animation-duration: 3000ms;
-        -webkit-transform-origin: 70% 70%;
-        transform-origin: 70% 70%;
-        -webkit-animation-iteration-count: 1;
-        animation-iteration-count: 1;
-        -webkit-animation-timing-function: linear;
-        animation-timing-function: linear;
-    }
-    @-webkit-keyframes pulse-frames {
-        0% { -webkit-transform: scale(1); }
-        30% { -webkit-transform: scale(1); }
-        40% { -webkit-transform: scale(1.02); }
-        50% { -webkit-transform: scale(1); }
-        60% { -webkit-transform: scale(1); }
-        70% { -webkit-transform: scale(1.01); }
-        80% { -webkit-transform: scale(1); }
-        100% { -webkit-transform: scale(1); }
-    }
-    @keyframes pulse-frames {
-        0% { transform: scale(1); }
-        30% { transform: scale(1); }
-        40% { transform: scale(1.02); }
-        50% { transform: scale(1); }
-        60% { transform: scale(1); }
-        70% { transform: scale(1.01); }
-        80% { transform: scale(1); }
-        100% { transform: scale(1); }
-    }
-
-    /*
-     * Flash animation
-    */
-    .flash {
-        -webkit-animation: flash-frames linear 1s 3;
-        animation: 'flash-frames' linear 1s 3;
-    }
-    @-webkit-keyframes flash-frames {
-        0% { opacity: 1; }
-        50% { opacity: .1; }
-        100% { opacity: 1; }
-    }
-    @keyframes flash-frames {
-        0% { opacity: 1; }
-        50% { opacity: .1; }
-        100% { opacity: 1; }
     }
 }

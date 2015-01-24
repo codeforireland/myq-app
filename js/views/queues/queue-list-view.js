@@ -1,9 +1,8 @@
 app.QueueListView = Backbone.View.extend({
-    tagName:  'ul',
 
-    className: 'list-group',
+    className: 'queue-list-view',
 
-    id: 'queues',
+	template: 'queue-list-view-tpl',
 
     initialize: function () {
         $('.navbar-brand.title').html('My Q');
@@ -17,7 +16,9 @@ app.QueueListView = Backbone.View.extend({
 
         this.listenTo(this.collection, 'reset', this.render);
         if(!this.collection.length) {
-            this.collection.fetch({reset: true});
+            this.collection.fetch({reset: true, error: function() {
+                Util.notify('#no-service', 'danger');
+            }});
         } else {
             this.render();
         }
@@ -27,12 +28,14 @@ app.QueueListView = Backbone.View.extend({
         // Remove any old notification messages.
         $('.notifications .alert').remove();
 
+        this.$el.mustache(this.template);
+
         var queueListViewFragment = document.createDocumentFragment();
         this.collection.each(function(queueModel) {
-            var queueItemView = new app.QueueItemView({ model: queueModel });
-            queueListViewFragment.appendChild(queueItemView.el);
+            var queueItemDetailView = new app.QueueItemDetailView({model: queueModel});
+            queueListViewFragment.appendChild(queueItemDetailView.el);
         }, this);
 
-        this.$el.html(queueListViewFragment);
+        this.$('#queues').append(queueListViewFragment);
     }
 });

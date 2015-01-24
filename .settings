@@ -14,7 +14,7 @@
 ; enter your terminal preferences here...
 
 [preview]
-index_file = index2.html
+index_file = index.html
 ; enter your preview preferences here...
 
 [salesforce]

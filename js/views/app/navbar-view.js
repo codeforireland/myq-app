@@ -4,9 +4,8 @@ app.NavbarView = Backbone.View.extend({
 
     template: 'navbar-view-tpl',
 
-    events : {
-        'click .navbar-collapse ul li a.scroll': 'scrollToSection',
-        'click .feedback': 'showFeedback'
+    events: {
+        'click a' : 'menuItemSelected'
     },
 
     initialize: function () {
@@ -15,19 +14,22 @@ app.NavbarView = Backbone.View.extend({
 
     render: function () {
         this.$el.mustache(this.template);
+
+        $(window).scroll($.proxy(this.fadeNavBarOnScroll, this));
     },
 
-    scrollToSection: function(e) {
-        e.preventDefault();
-        this.$('.navbar-toggle:visible').click(); // Close menu
-
-        Util.scrollToElement(e.target);
+    fadeNavBarOnScroll: function() {
+        this.$el.css('background-color', 'rgba(255,255,255,' + document.body.scrollTop*2/100 +')');
     },
 
-    showFeedback: function(e) {
+    menuItemSelected: function(e) {
         e.preventDefault();
-        this.$('.navbar-toggle:visible').click(); // Close menu
 
-        this.trigger('feedback', e);
+        // Hide navbar
+        $('.collapse').collapse('hide')
+        $('.navbar-toggle').addClass('collapsed');
+
+        // Extract event and trigger it.
+        this.trigger(e.target.hash.substring(1));
     }
 });

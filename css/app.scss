@@ -1,9 +1,76 @@
 @import 'app/about-view';
 @import 'app/app-view';
-@import 'app/disclaimer-view';
 @import 'app/feedback-view';
 @import 'app/navbar-view';
 
 @import 'queue/queue-view';
 
 @import 'queues/queues';
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    background-color: #DFDFDF;
+}
+
+img {
+    -webkit-user-drag: none;
+}
+
+.mask {
+    width: 100%;
+    height: 100%;
+    display: none;
+    position: absolute;
+    z-index: 1031; /* Just higher than bootstrap navbar. */
+    background-color: rgba(0, 0, 0, 0.2);
+    -webkit-transition: opacity 400ms ease-out;
+}
+
+.clear {
+    clear: both;
+}
+
+input:focus {
+    border-color: rgba(50, 170, 174, 0.6);
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(50, 170, 174, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(50, 170, 174, 0.6);
+}
+
+.cardholder {
+    -webkit-perspective: 1000;
+    -webkit-transform: translate3d(0,0,0); // Bizarrely, if this isn't applied the click handlers don't work properly.
+    -webkit-user-select: none;
+
+    .card {
+        -webkit-transition: -webkit-transform 0.5s, height 0.25s;
+        -webkit-transform-style: preserve-3d;
+
+        position: relative;
+
+        .back, .front {
+            -webkit-backface-visibility: hidden;
+            -webkit-transform: translate3d(0,0,0); // Fix impossible bug where backface-visibility leaves visual artefacts from other side of card.
+
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+
+        .front {
+            z-index: 2;
+        }
+
+        .back {
+            -webkit-transform: rotateY(-180deg);
+        }
+
+        &.flipped {
+            -webkit-transform: rotateY(-180deg);
+        }
+    }
+}

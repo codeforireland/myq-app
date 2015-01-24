@@ -1,10 +1,9 @@
 <script id="navbar-view-tpl" type="x-tmpl-mustache">
 
     <div class="navbar-header">
-        <span class="navbar-brand back-button glyphicon glyphicon-arrow-left hidden"></span>
-        <a href="/#"><span class="navbar-brand logo"><img src="images/codeforireland_q_logo.png"></span>
-        <span class="navbar-brand title">My Q</span></a>
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="navbar-brand back-button glyphicon glyphicon-play hidden"></span>
+        <span class="navbar-brand title">My Q</span>
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -13,153 +12,232 @@
     </div>
     <div class="navbar-collapse collapse navbar-right">
         <ul class="nav navbar-nav pull-right">
-            <li><a href="#about_app" class="scroll">About App</a>
+            <li><a href="#about">About App</a>
             </li>
-            <li><a href="#about_cfi" class="scroll">Code for Ireland</a>
-            </li>
-            <li><a href="#feedback" class="feedback">App Feedback</a>
+            <li><a href="#feedback">App Feedback</a>
             </li>
         </ul>
     </div>
+
+</script>
+
+<script id="about-view-tpl" type="x-tmpl-mustache">
+
+    <div class="close">×</div>
+
+    <div class="title">About App</div>
+    This application provides an estimate of queuing times for face-to-face services of the Irish Government. It was developed in 2014 by a volunteer team from Code for Ireland.
+
+    <div class="title cfi">About Code for Ireland</div>
+    <a href="//www.codeforireland.com" target="_blank">Code for Ireland</a> is following in the footsteps of <a href="//www.codeforamerica.org" target="_blank">Code For America</a>, founded in 2009. Like Code For America, Code For Ireland has attracted technologists to get involved in developing technology solutions in and with the Irish government and its communities.
+
+    <div class="disclaimer well well-sm ">
+        <div class="title">Disclaimer</div>
+        The information provided by this website is for entertainment purposes only. By accessing this site and/or by requesting and/or receiving information and/or advice through the site or any of the guests or affiliates of the site, you agree that you are solely liable for any and all actions taken as a result of the information and/or advice received, and acknowledge that the site providers take no responsibility for the content or service provided. You agree that by accessing the site you take full responsibility for any and all consequences acted upon in utilizing the information provided within the site.
+    </div>
+
 </script>
 
 <script id="feedback-view-tpl" type="x-tmpl-mustache">
 
-    <div id="feedback">
-        <form class="form-inline" role="form">
-            <div class="form-group">
-                <input type="number" data-min="1" data-max="5" class="rating" data-empty-value="0" />
-                <textarea maxlength="50" class="form-control" placeholder="Tell us what you think of the app."></textarea>
-                <button id="cancel" type="submit" class="btn btn-default">Cancel</button>
-                <button id="submit" type="submit" data-loading-text="Submitting..." class="btn btn-default pull-right">Submit</button>
-            </div>
-        </form>
-    </div>
+    <form class="form-inline" role="form">
+        <div class="close">×</div>
+
+        <div class="form-group">
+            <input type="number" data-min="1" data-max="5" class="rating" data-empty-value="0" />
+            <textarea maxlength="50" class="form-control" placeholder="Tell us what you think of the app."></textarea>
+            <div class="submit">SUBMIT</div>
+        </div>
+
+        <hr class="loader">
+    </form>
 
     <div id="feedback-sent" class="hidden">
         <span class="glyphicon glyphicon-thumbs-up"></span> <strong>Thanks!</strong> Your feedback has been recorded <span class="glyphicon glyphicon-heart-empty"></span>
     </div>
 </script>
 
-<script id="about-view-tpl" type="x-tmpl-mustache">
+<script id="queue-list-view-tpl" type="x-tmpl-mustache">
 
-    <div id="about_app" class="panel panel-default">
-        <div class="panel-heading">About the App</div>
-        <div class="panel-body">
-            This application provides an estimate of queuing times for face-to-face services of the Irish Government. It was developed in 2014 by a volunteer team from Code for Ireland.
-            <div class="top">
-            top
-            </div>
-        </div>
+	<div class="myq-cover">MY Q</div>
+	<div class="pick-a-queue">
+        <span>Pick a queue</span>
     </div>
+    <div class="down-arrow"></div>
 
-    <div id="about_cfi" class="panel panel-default">
-        <div class="panel-heading">About Code for Ireland</div>
-        <div class="panel-body">
-            <a href="//www.codeforireland.com" target="_blank">Code for Ireland</a> is following in the footsteps of <a href="//www.codeforamerica.org" target="_blank">Code For America</a>, founded in 2009. Like Code For America, Code For Ireland has attracted technologists to get involved in developing technology solutions in and with the Irish government and its communities.
-            <div class="top">
-            top
-            </div>
-        </div>
-    </div>
-
-</script>
-
-<script id="disclaimer-view-tpl" type="x-tmpl-mustache">
-
-    <div class="disclaimer-link">
-    Disclaimer
-    </div>
-    <div class="well well-sm disclaimer-content">
-        The information provided by this website is for entertainment purposes only. By accessing this site and/or by requesting and/or receiving information and/or advice through the site or any of the guests or affiliates of the site, you agree that you are solely liable for any and all actions taken as a result of the information and/or advice received, and acknowledge that the site providers take no responsibility for the content or service provided. You agree that by accessing the site you take full responsibility for any and all consequences acted upon in utilizing the information provided within the site.
-    </div>
-
-</script>
-
-<script id="queue-item-view-tpl" type="x-tmpl-mustache">
-
-    <a href="#q/{{queueId}}">
-        <h1><u>{{name}}</u></h1>
-        <img class="img-responsive img-thumbnail" src="images/{{queueId}}_lg@2x.jpg" />
-    </a>
+    <ul id="queues">
+	</ul>
 
 </script>
 
 <script id="queue-item-detail-view-tpl" type="x-tmpl-mustache">
 
-    <p>{{description}}</p>
-    <div class="address"><span class="glyphicon glyphicon-home"></span> {{address.addressLine1}}, {{address.townOrCity}} {{address.postcode}}</div>
-    <span class="glyphicon glyphicon-phone"></span> <a href="tel:{{contactDetails.formattedTelephoneNumber}}">{{contactDetails.displayTelephoneNumber}}</a><br>
-    {{#contactDetails.email}}<span class="glyphicon glyphicon-envelope"></span> <a href="mailto:{{contactDetails.email}}" target="_blank">{{contactDetails.email}}</a><br>{{/contactDetails.email}}
-    {{#openingHours}}
-        <span class="glyphicon glyphicon-time"></span> {{day}} {{openingHour}}:{{openingMinute}} - {{closingHour}}:{{closingMinute}}
-    {{/openingHours}}
-    <div class="googleMap">
-        <img src="" />
-        <div class="address"><a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}},{{address.addressLine1}},{{address.townOrCity}},{{address.postcode}})?z=17">{{address.name}}</a><br/>{{address.addressLine1}},<br/>{{address.townOrCity}}<br/>{{address.postcode}}</div>
+    <a href="#q/{{queueInfo.queueId}}">
+        {{address.name}}
+    </a>
+
+    <div class="status">
+        <div class="is-open">
+            {{#isOpen}}OPEN{{/isOpen}}
+            {{^isOpen}}CLOSED{{/isOpen}}
+        </div>
     </div>
 
 </script>
 
 <script id="queue-view-tpl" type="x-tmpl-mustache">
 
-    <div id="ticket-number" class="panel panel-primary pulse">
-        <div class="panel-heading">
-            <h3 class="panel-title">Your ticket number</h3>
+    <div class="header">
+        <div class="myq-cover" style="background-image: url('images/{{queueInfo.queueId}}_md@2x.png');">
+            <span class="title">{{address.name}}</span>
+            <hr>
+            <div class="status">
+                {{#isOpen}}OPEN{{/isOpen}}
+                {{^isOpen}}CLOSED{{/isOpen}}
+                <span class="glyphicon glyphicon-info-sign"></span>
+            </div>
         </div>
+    </div>
 
-        <div id="badge" class="panel-body">
-            <span class="badge">{{ticket}}</span>
-        </div>
-
-        <div class="panel-body">
-            <form id="ticketForm">
-                <div class="input-group">
-                    <input type="number" class="form-control" placeholder="What's your ticket number?" name="ticket">
-                    <input type="hidden" name="queue">
-                    <span class="input-group-btn">
-                        <button type="submit" class="btn btn-default">Go!</button>
-                    </span>
+    <div class="inner-content">
+        <div class="details">
+            <div class="details-holder">
+                <div class="description">
+                    {{description}}
                 </div>
-            </form>
-        </div>
-
-        <div id="ticket-number-invalid" class="hidden">
-            <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid ticket number. Please enter the number that is printed on your ticket.
-        </div>
-    </div>
-
-    <div id="service-number" class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">Who is being served?</h3>
-        </div>
-        <div class="panel-body">
-            <span class="service-number-led">{{servicedTicketNumber}}</span>
-            <form id="serviceForm">
-                <div id="serviceNumber" class="input-group">
-                    <input type="number" class="form-control" placeholder="Current Service Number?">
-                    <span class="input-group-btn">
-                        <button type="submit" data-loading-text="Submitting..." class="btn btn-default">Go!</button>
-                    </span>
+                <div class="address">
+                    <div class="title">Address & Contact</div>
+                    <div><a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}}, {{address.addressLine1}}, {{address.county}})?z=17">{{address.addressLine1}}, {{address.county}}</a></div>
+                    <div><a href="tel:{{contactDetails.formattedTelephoneNumber}}">{{contactDetails.displayTelephoneNumber}}</a></div>
+                    <div><a href="mailto:{{contactDetails.email}}" target="_top">{{contactDetails.email}}</a></div>
                 </div>
-            </form>
-            <p class="help-block">If you can see the monitor, what number is on it right now?</p>
+                <div class="googleMap">
+                    <img src="" />
+                    <div class="overlay">
+                        <a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}},{{address.addressLine1}},{{address.townOrCity}},{{address.postcode}})?z=17">{{address.name}}</a>
+                        <div>{{address.addressLine1}},</div>
+                        <div>{{address.townOrCity}}</div>
+                        <div>{{address.postcode}}</div>
+                    </div>
+                </div>
+                <div class="hours">
+                    <div class="title">Opening Hours</div>
+                    <table>
+                        {{#openingHours}}
+                        <tr><td>{{day}}</td><td class="time">{{openingHour}}:{{openingMinute}} - {{closingHour}}:{{closingMinute}}</td></tr>
+                        {{/openingHours}}
+                    </table>
+                </div>
+            </div>
         </div>
 
-        <div id="service-number-invalid" class="hidden">
-            <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid service number. Please enter the number that is currently displayed on the monitor.
+        <div class="wait-time">
+
+            <div class="estimated">
+                <img src="images/estimated-wait-time.png" />
+                <div class="title">Estimated waiting time</div>
+            </div>
+            <div>
+                <span class="time-hour"></span>
+                <span class="time-text">h</span>
+                <span class="time-minute"></span>
+                <span class="time-text">m</span>
+                <span class="time-second"></span>
+                <span class="time-text">s</span>
+            </div>
+            <div class="clear"></div>
+
+            <hr class="loader">
+        </div>
+
+        <div class="notification estimated">
+            <div class="dismiss">×</div>
+            <div class="up-arrow" />
+            <div class="text">
+                Thank you! Estimated waiting time has been updated based on information you provided.
+            </div>
+        </div>
+
+        <div class="service-number">
+            <div class="cardholder">
+                <div class="card flipped">
+                    <div class="front">
+                        <div class="content">
+                            <div class="service-number-front">
+                                <img class="icon" src="images/being-served.png" />
+                                <div class="title">Current person being served</div>
+                                <div class="number"></div>
+                                <div class="clear"></div>
+                                <div class="flip-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="content">
+                            <div class="service-number-back">
+                                <form class="service-form">
+                                    <div class="header">If you can see the monitor, what number is on it right now?</div>
+                                    <div class="input-area">
+                                        <input type="number" name="service-number" placeholder="Who is being served?">
+                                        <input type="hidden" name="queue">
+                                        <div class="submit">SUBMIT</div>
+                                    </div>
+
+                                    <div class="flip-button"></div>
+                                </form>
+
+                                <div id="service-number-invalid" class="hidden">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid service number. Please enter the number that is currently displayed on the monitor.
+                                </div>
+
+                                <hr class="loader">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ticket-number">
+            <div class="cardholder">
+                <div class="card flipped">
+                    <div class="front">
+                        <div class="content">
+                            <div class="ticket-number-front">
+                                <img class="icon" src="images/your-ticket.png" />
+                                <div class="title">Your ticket number</div>
+                                <div class="number"></div>
+                                <div class="clear"></div>
+                                <div class="flip-button"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="content">
+                            <div class="ticket-number-back">
+                                <form class="ticket-form">
+                                    <div class="header">What is your ticket number?</div>
+                                    <div class="input-area">
+                                        <input type="number" name="ticket" placeholder="Your ticket number?">
+                                        <div class="submit">SUBMIT</div>
+                                    </div>
+
+                                    <div class="flip-button"></div>
+                                </form>
+
+                                <div id="ticket-number-invalid" class="hidden">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid ticket number. Please enter the number that is printed on your ticket.
+                                </div>
+
+                                <hr class="loader">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div id="wait-time" class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title average">Average waiting time</h3>
-            <h3 class="panel-title estimated">Your estimated wait time</h3>
-        </div>
-        <div class="panel-body">
-            <span id="countdown"></span>
-        </div>
-    </div>
 </script>
 
 <script id="queue-messages-view-tpl" type="x-tmpl-mustache">

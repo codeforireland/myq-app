@@ -1,4 +1,23 @@
-#about {
+.about-app {
+    position: absolute;
+    z-index: 1032; /* Just higher than modal mask. */
+    top: 50px;
+    background-color: white;
+    padding: 10px;
+    color: #777;
+    box-shadow: 0 5px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+
+    .title {
+        color: rgba(0, 0, 0, 0.8);
+        font-size: 1.5em;
+    }
+
+    .cfi, .disclaimer {
+        margin-top: 10px;
+        margin-bottom: 0;
+    }
+
     .top {
         text-align: right;
         margin-right: 1em;

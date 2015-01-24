@@ -1,7 +1,9 @@
 app.QueueCollection = Backbone.Collection.extend({
     model: app.QueueModel,
 
-    url: app.queuesUrl,
+    url: app.queuesDetailsUrl,
 
-    comparator: 'queueId'
+    comparator: function(item) {
+        return item.get('queueInfo').queueId;
+    }
 });

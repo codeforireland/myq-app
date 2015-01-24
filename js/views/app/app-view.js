@@ -5,14 +5,13 @@ app.AppView = Backbone.View.extend({
     template: 'queue-messages-view-tpl',
 
     events: {
-        'click .container': 'closeNavbar',
-        'click .top': 'handleTopLink'
+        'click .container, .back-button': 'closeNavbar'
     },
 
     initialize: function () {
         this.$container = this.$('.container');
 
-         this.render();
+        this.render();
     },
 
     render: function () {
@@ -21,26 +20,18 @@ app.AppView = Backbone.View.extend({
         app.navbarView = new app.NavbarView(); // Store reference to listen to Navbar events from outside of the Navbar view.
         this.$el.append(app.navbarView.el); // navbar
 
-        new app.FeedbackView(); // feedback (added to DOM in view for ratings component to work)
+        this.$el.append(new app.FeedbackView().el);
+        this.$el.append(new app.AboutView().el);
 
         this.$content = $('<div class="content"></div>')
         this.$container.append(this.$content);
-
-        this.$container.append(new app.AboutView().el); // about
-
-        this.$container.append(new app.DisclaimerView().el); // disclaimer
     },
 
-    closeNavbar: function() {
+    closeNavbar: function(e) {
         // Close dropdown menu if clicked outside.
         if(this.$('.navbar-collapse.navbar-right.collapse.in').is(':visible')) {
-            this.$('.collapse').collapse('hide');
+            this.$('.collapse').collapse('hide')
+            this.$('.navbar-toggle').addClass('collapsed');
         }
-    },
-
-    handleTopLink: function() {
-        $('html, body').animate({ // 'html' required for IE compatibility.
-            scrollTop: 0
-        });
     }
 });

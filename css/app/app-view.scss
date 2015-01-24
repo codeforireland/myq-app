@@ -1,14 +1,19 @@
 .app-view {
     >.container {
-        margin-top: 70px;
+        margin-top: 0;
+        padding: 0;
     }
 }
 
 .notifications {
     &.top-left {
-        left: 0;
-        top: 4em;
-        z-index: 3;
+        top: 0;
+        left: 50%;
+        z-index: 1031;
+
+        .alert {
+            left: -50%;
+        }
     }
 
     >div {

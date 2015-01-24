@@ -8,63 +8,97 @@ app.QueueView = Backbone.View.extend({
 
     MAX_WAIT_TIME: 60 * 60 * 24, // 1 day
 
-    DEBUG_TIME: $.now() + (60 * 10 * 1000), // 10 minutes
+    DEBUG_TIME: (1000 * 100), // 100 seconds
+
+    MIN_ANIMATION_TIME: 300,
+
+    ALERT_DISPLAY_TIME: 5000,
+
+    timers: [],
 
     events: {
-        'submit #serviceForm' : 'serviceSubmit',
-        'keydown #serviceForm input' : 'serviceSubmitOnKeys',
-        'submit #ticketForm' : 'ticketSubmit',
-        'keydown #ticketForm input' : 'ticketSubmitOnKeys'
+        'click .header .status span': 'toggleDetails',
+
+        'click .service-form .submit' : 'serviceSubmit',
+        'keydown .service-form input' : 'serviceSubmitOnKeys',
+
+        'click .ticket-form .submit' : 'ticketSubmit',
+        'keydown .ticket-form input' : 'ticketSubmitOnKeys',
+
+        'click .notification' : 'dismissNotification',
+        'click .flip-button' : 'flipCard',
+
+        'click .form-mask' : 'stopPropagation'
     },
 
     initialize: function () {
-        // Update NavBar with current queue name.
-        $('.navbar-brand.title').html(this.model.get('name'));
-
         // Initialise and display back button
         var backArrow = $('.navbar-brand.back-button');
         backArrow.removeClass('hidden');
-        backArrow.on('click', function() {
+        var self = this;
+
+        backArrow.off().on('click', function() {
+            _.each(self.timers, function(item) {
+                clearInterval(item);
+            });
+            self.timers = [];
             history.back();
         });
 
         // Render view.
         this.render();
 
-        // Cache elements.
-        this.$serviceInput = this.$('#serviceForm input[type=number]');
-        this.$ticketInput = this.$('#ticketForm input[type=number]');
+        this.addGoogleMap();
+
+        // on resize event:
+        $(window).resize(function() {
+            var serviceCard = $('.service-number .card');
+            if(serviceCard.hasClass('flipped')) {
+                serviceCard.height($('.back', serviceCard).height());
+            } else {
+                serviceCard.height($('.front', serviceCard).height());
+            }
+        });
     },
 
     render: function () {
-        var modelJSON = this.adaptModelForView(this.model.toJSON());
+        this.$el.mustache(this.template, this.adaptModelForView(this.model.toJSON()));
 
-        this.$el.mustache(this.template, modelJSON);
+        // Remove any old notification messages.
+        $('.notifications .alert').remove();
 
-        var queue = this.model.get('queueId');
+
+        if(!this.model.get('isOpen')) {
+            this.$('.status span').css('visibility', 'hidden');
+            this.$('.inner-content .details').show();
+            return;
+        }
+
+        var queue = this.model.get('queueInfo').queueId;
         var ticket = this.model.get('ticket');
 
+        // Cache elements
+
+        // Wait Time
+        this.$waitTime = this.$('.wait-time');
+
+        // Service Number
+        this.$serviceNumber = this.$('.service-number');
+        this.$serviceNumberCardHolder = $('.cardholder', this.$serviceNumber);
+        this.$serviceNumberCard = $('.card', this.$serviceNumber);
+        this.$serviceNumberDisplay = $('.service-number-front', this.$serviceNumber);
+        this.$serviceInput = $('.service-form input', this.$serviceNumber);
+
+        // Ticket Number
+        this.$ticketNumber = this.$('.ticket-number');
+        this.$ticketNumberCardHolder = $('.cardholder', this.$ticketNumber);
+        this.$ticketNumberCard = $('.card', this.$ticketNumber);
+        this.$ticketNumberDisplay = $('.ticket-number-front', this.$ticketNumber);
+        this.$ticketInput = $('.ticket-form input', this.$ticketNumber);
+
         if(ticket) {
-            this.ticketChanged(ticket);
-        } else {
-            this.getAverageWaitingTime(queue);
+            this.ticketChanged(ticket, false);
         }
-    },
-
-    getAverageWaitingTime: function(queue) {
-        $.ajax({
-            url: app.queuesUrl + queue + '/stats',
-            context: this
-        }).done(function(response) {
-            if(response.calculatedAverageWaitingTime) {
-                this.displayCountdownTime(response.calculatedAverageWaitingTime);
-            } else {
-                this.displayAverageTime(response.defaultAverageWaitingTime);
-            }
-
-            $('#wait-time .estimated').hide();
-            $('#wait-time, #wait-time .average').show();
-        });
     },
 
     /**
@@ -72,184 +106,348 @@ app.QueueView = Backbone.View.extend({
      *
      */
     adaptModelForView: function(modelJSON) {
-        modelJSON.ticket = Util.zeroPad(modelJSON.ticket, 4);
-        modelJSON.servicedTicketNumber = Util.zeroPad(modelJSON.servicedTicketNumber, 4);
+        var openingHours = modelJSON.openingHours;
+        // Pad out any missing digits from time elements.
+        _.each(openingHours, function(element) {
+            element.openingHour = Util.zeroPad(element.openingHour, 2);
+            element.openingMinute = Util.zeroPad(element.openingMinute, 2);
+            element.closingHour = Util.zeroPad(element.closingHour, 2);
+            element.closingMinute = Util.zeroPad(element.closingMinute, 2);
+        }, this);
 
+        // Sort opening times by day.
+        openingHours.sort(function(a, b) {
+            if (a.id < b.id) {
+                return -1;
+            }
+
+            if (a.id > b.id) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        // Format Telephone numbers.
+        var contactDetails = modelJSON.contactDetails;
+        contactDetails.formattedTelephoneNumber = this.formatTelephoneNumber(contactDetails.phoneNumber);
+        contactDetails.displayTelephoneNumber = this.displayTelephoneNumber(contactDetails.phoneNumber);
         return modelJSON;
     },
 
-    ticketChanged: function(ticket) {
-        this.$('#ticket-number #badge').show();
+    addGoogleMap: function() {
+        var location = this.model.get('location');
+        // Get static Google map of office location.
+        var googleMapEl = this.$('.googleMap');
+        var googleMapImg = $('img', googleMapEl);
+        var googleMap = {
+            url: 'http://maps.googleapis.com/maps/api/staticmap?center=',
+            latitude: location.latitude,
+            longitude: location.longitude,
+            width: $('body').width() - 14,
+            height : Math.floor($('body').width()/(16/9)), // use 16:9 aspect ratio
+            markers: 'color:red%7C',
+            key: 'AIzaSyDefOx_1uZiXgBWTfa3SABcl60rRRJdSCE',
+            zoom: 14,
 
-        this.$('#ticket-number .badge').html(Util.zeroPad(ticket, 4));
+            toString: function() {
+                return this.url + this.latitude + ',' + this.longitude +
+                    '&size=' + this.width + 'x' + this.height +
+                    '&markers=color:red%7C' + this.latitude + ',' + this.longitude +
+                    '&zoom=' + this.zoom +
+                    '&key=' + this.key;
+            }
+        };
+        googleMapImg.attr('src', googleMap);
 
-        var queue = this.model.get('queueId');
+        // Centre address overlay.
+        var address = $('.overlay', googleMapEl);
+        address.css('margin-top', -address.height()/2);
+        address.css('margin-left', -address.width()/2);
 
-        var startRequestTime = Util.showMask($('#ticketForm .input-group'), this.$('#ticket-number button'));
+        // Toggle address on click.
+        googleMapEl.click(function(e) {
+            var opacity = address.css('opacity');
+            if(opacity == 0) {
+                // Prevent anchor working until address is visible.
+                e.preventDefault();
+            }
+            address.animate({opacity: (opacity == 1 ? 0 : 1)});
+        });
+    },
+
+    /**
+     * Return a dialable phone number.
+     *
+     * Given the following:
+     * {
+     *     countryCode: "353",
+     *     areaCode: "99",
+     *     lineNumber: "1234567",
+     *     extension: "2534" // Extension is dropped - only used for display purposes.
+     * }
+     *
+     * return +353991234567
+     *
+     */
+    formatTelephoneNumber: function(number) {
+        var formattedTelephoneNumber = number.areaCode + number.lineNumber;
+        if(number.countryCode) {
+            formattedTelephoneNumber = '+' + number.countryCode + formattedTelephoneNumber;
+        }
+        return formattedTelephoneNumber;
+    },
+
+    /**
+     * Return a readable phone number.
+     *
+     * Given the following:
+     * {
+     *     countryCode: "353",
+     *     areaCode: "99",
+     *     lineNumber: "1234567",
+     *     extension: "2534" // Extension is dropped - only used for display purposes.
+     * }
+     *
+     * return +353-99-1234567
+     *
+     */
+    displayTelephoneNumber: function(number) {
+        var displayNumber = number.areaCode + '-' + number.lineNumber;
+        if(number.countryCode) {
+            displayNumber = '+' + number.countryCode + '-' + displayNumber;
+        }
+        if(number.extension) {
+            displayNumber += ' Ext.' + number.extension;
+        }
+        return displayNumber;
+    },
+
+    toggleDetails: function() {
+        this.$('.header .status span').toggleClass('rotate');
+        this.$('.inner-content .details').slideToggle();
+    },
+
+    flipCard: function(eventOrCard) {
+        var card = eventOrCard.target ? $(eventOrCard.target).closest('.card') : eventOrCard;
+        card.toggleClass('flipped');
+
+        // flipTimer is used to hide the other side of the card
+        // so that it doesn't take up space when the card is flipped.
+        // It needs to be cleared in case the flipCard method is
+        // is re-entered.
+        if(this.flipTimer) {
+            clearInterval(this.flipTimer);
+        }
+
+        var FLIP_ANIMATION_DURATION = 500;
+        if(card.is('.flipped')) {
+            $('.back', card).show();
+            $('.front', card).show();
+            card.height($('.back', card).height());
+            this.flipTimer = setTimeout(function() {
+                $('.front', card).hide();
+            }, FLIP_ANIMATION_DURATION);
+        } else {
+            $('.front', card).show();
+            $('.back', card).show();
+            card.height($('.front', card).height());
+            this.flipTimer = setTimeout(function() {
+                $('.back', card).hide();
+            }, FLIP_ANIMATION_DURATION);
+        }
+
+        Util.scrollToElement(card)
+    },
+
+    dismissNotification: function(e) {
+        $(e.currentTarget).hide();
+    },
+
+    displayWaitTime: function(waitTime, startClock) {
+        // DEBUG TBR
+        //waitTime = $.now() + this.DEBUG_TIME;
+
+        var waitTime = new Date(waitTime);
+
+        var hours = waitTime.getHours();
+        var minutes = waitTime.getMinutes();
+        var seconds = waitTime.getSeconds();
+
+        var tick = function(hours, minutes, seconds) {
+            $('.time-hour', this.$waitTime).text(hours);
+            $('.time-minute', this.$waitTime).text(minutes);
+            $('.time-second', this.$waitTime).text(seconds);
+        };
+
+        if(typeof startClock !== 'undefined' && startClock) {
+            clearInterval(this.timerId);
+            this.timers = _.without(this.timers, this.timerId);
+            var self = this;
+            this.timerId = countdown(function(ts) {
+                if(ts.value <= 0) {
+                    clearInterval(self.timerId);
+                    self.timers = _.without(self.timers, self.timerId);
+                    ts.seconds = 0; // Required as sometimes a single second can be left over.
+                }
+
+                tick(ts.hours, ts.minutes, ts.seconds);
+
+            }, waitTime, countdown.HOURS|countdown.MINUTES|countdown.SECONDS);
+            this.timers.push(this.timerId);
+        } else {
+            tick(hours, minutes, seconds);
+        }
+
+        return (hours + minutes + seconds) > 0;
+    },
+
+    ticketChanged: function(ticket, notify) {
+        this.$ticketNumberCardHolder.addClass('form-mask');
+
+        var loadTimer = Util.startProgressLoader(this.$ticketNumber);
+
+        $('.number', this.$ticketNumberDisplay).html(ticket);
+        this.$ticketInput.val(ticket);
+
+        var queue = this.model.get('queueInfo').queueId;
 
         // Get new wait time based on submitted ticket number.
         $.ajax({
             url: app.queuesUrl + queue + '/tickets/' + ticket,
             context: this
         }).done(function(response) {
-            if(this.displayCountdownTime(response.waitingTime)) {
-                $('#wait-time, #wait-time .estimated').show();
-                $('#wait-time .average').hide();
+            var self = this;
+            setTimeout(function() {
+                if(response.waitingTime < $.now()) {
+                    Util.notify('#wait-time-unavailable', 'warning');
+                    self.model.set('ticket', undefined);
+                    return;
+                }
 
-                var self = this;
-                Util.notify('#ticket-number-update', 'success', function() {
-                    self.serviceNumberPulse();
-                });
+                if(self.displayWaitTime(response.waitingTime, true)) {
+                    var showServiceNumber = function() {
+                        self.$serviceNumber.show();
+                        if(!self.$serviceNumberCard.hasClass('flipped')) {
+                           self.flipCard(self.$serviceNumberCard);
+                        }
 
-                // Get the latest service number.
-                $.ajax({
-                    url: app.queuesUrl + queue + '/stats',
-                    context: this
-                }).done(function(response) {
-                    var serviceNumber = response.currentTicketNumber;
+                        self.$serviceNumberCard.height($('.back', self.$serviceNumberCard).height());
 
-                    if(serviceNumber !== null && typeof serviceNumber !== 'undefined') {
-                        this.$('#service-number, .service-number-led').show();
-                        this.$('.service-number-led').html(Util.zeroPad(serviceNumber, 4));
+                        Util.scrollToElement(self.$serviceNumber);
+                    };
+
+                    if(notify) {
+                        self.$('.notification.estimated').show().delay(self.ALERT_DISPLAY_TIME - self.MIN_ANIMATION_TIME).fadeOut('', showServiceNumber);
+                    } else {
+                        showServiceNumber();
                     }
-                });
-            } else {
-                Util.notify('#wait-time-unavailable', 'warning');
-                $('#service-number').hide();
 
-                this.getAverageWaitingTime(queue);
-            }
-        }).always(function() {
-            Util.hideMask($('#ticketForm .input-group'), this.$('#ticket-number button'), startRequestTime);
-        });
-    },
-
-    serviceNumberChanged: function(servicedTicketNumber) {
-        $('.service-number-led').html(Util.zeroPad(servicedTicketNumber, 4)).show();
-
-        // Get new wait time based on submitted service number.
-        var self = this;
-
-        var startRequestTime = Util.showMask($('#serviceForm .input-group'), this.$('#service-number button'));
-
-        this.model.save(undefined, {
-            success: function(response) {
-                $('#countdown').addClass('flash');
-                setTimeout(function() {
-                    $('#countdown').removeClass('flash');
-                }, 3000);
-
-                if(self.displayCountdownTime(response.get('waitingTime'))) {
-                    Util.notify('#service-number-update');
+                    self.$waitTime.slideDown();
                 } else {
                     Util.notify('#wait-time-unavailable', 'warning');
                 }
+            }, this.MIN_ANIMATION_TIME);
+        }).always(function() {
+            var self = this;
+            setTimeout(function() {
+                self.$ticketNumberCardHolder.removeClass('form-mask');
+                Util.stopProgressLoader(self.$ticketNumber, loadTimer);
+                self.flipIfNotFocused(self.$ticketInput, self.$ticketNumberCard);
+                Util.scrollToElement(self.$waitTime);
+                $('.ticket-number-back .flip-button', self.$ticketNumber).fadeIn();
+            }, this.MIN_ANIMATION_TIME);
+        });
+    },
+
+    ticketSubmit: function(event) {
+        event.stopPropagation();
+
+        // Remove any old notification messages.
+        $('.notifications .alert').remove();
+
+        if(!this.model.set('ticket', this.$ticketInput.val(), {validate: true})) {
+            Util.notify(this.model.validationError, 'warning');
+            //this.flipIfNotFocused(this.$ticketInput, this.$ticketNumberCard);
+        } else {
+            this.ticketChanged(this.$ticketInput.val(), true);
+        }
+    },
+
+    ticketSubmitOnKeys: function(event) {
+        if(event.which === 9 || event.which === 13) { // TAB or Enter Keys
+            event.preventDefault();
+            this.ticketSubmit(event);
+            this.$ticketInput.blur();
+        }
+    },
+
+    serviceNumberChanged: function(servicedTicketNumber) {
+        this.$serviceNumberCardHolder.addClass('form-mask');
+
+        var loadTimer = Util.startProgressLoader(this.$serviceNumber);
+
+        // If no ticket set, just set it to the updated servicedTicketNumber.
+        var ticket = this.model.get('ticket');
+        if(typeof ticket === 'undefined') {
+            this.model.set('ticket', this.model.get('servicedTicketNumber'));
+        }
+
+        var self = this;
+        this.model.save(undefined, {
+            success: function(response) {
+                setTimeout(function() {
+                    self.$('.notification.estimated').show().delay(self.ALERT_DISPLAY_TIME - self.MIN_ANIMATION_TIME).fadeOut();
+
+                    if(self.displayWaitTime(response.get('waitingTime'), true)) {
+                        $('.number', self.$serviceNumberDisplay).html(servicedTicketNumber);
+                        $('.service-number-back .flip-button', self.$serviceNumber).fadeIn();
+                    } else {
+                        Util.notify('#wait-time-unavailable', 'warning');
+                    }
+                }, self.MIN_ANIMATION_TIME);
             },
             error: function() {
-                Util.notify('#wait-time-unavailable', 'warning');
+                setTimeout(function() {
+                    Util.notify('#wait-time-unavailable', 'warning');
+                }, self.MIN_ANIMATION_TIME);
             },
             complete: function() {
-                Util.hideMask($('#serviceForm .input-group'), self.$('#service-number button'), startRequestTime);
+                setTimeout(function() {
+                    Util.stopProgressLoader(self.$serviceNumber, loadTimer);
+                    self.$serviceNumberCardHolder.removeClass('form-mask');
+                    self.flipIfNotFocused(self.$serviceInput, self.$serviceNumberCard);
+                    Util.scrollToElement(self.$waitTime);
+                }, self.MIN_ANIMATION_TIME);
             }
         });
     },
 
-    ticketSubmit: function(e) {
-        if(!this.model.set('ticket', this.$ticketInput.val(), {validate: true})) {
-            Util.notify(this.model.validationError, 'warning');
-        } else {
-            this.ticketChanged(this.$ticketInput.val());
-        }
+    serviceSubmit: function(event) {
+        event.stopPropagation();
 
-        return false; // prevent default action.
-    },
+        // Remove any old notification messages.
+        $('.notifications .alert').remove();
 
-    ticketSubmitOnKeys: function() {
-        if(event.which === 9) { // TAB Key
-            this.ticketSubmit();
-        }
-    },
-
-    serviceSubmit: function(e) {
         if(!this.model.set('servicedTicketNumber', this.$serviceInput.val(), {validate: true})) {
             Util.notify(this.model.validationError, 'warning');
+            //this.flipIfNotFocused(this.$serviceInput, this.$serviceNumberCard);
         } else {
             this.serviceNumberChanged(this.$serviceInput.val());
         }
-
-        return false; // prevent default action.
     },
 
-    serviceSubmitOnKeys: function() {
-        if(event.which === 9) { // TAB Key
-            this.serviceSubmit();
+    serviceSubmitOnKeys: function(event) {
+        if(event.which === 9 || event.which === 13) { // TAB or Enter Keys
+            event.preventDefault();
+            this.serviceSubmit(event);
+            this.$serviceInput.blur();
         }
     },
 
-    displayCountdownTime: function(waitTime) {
-        //waitTime = DEBUG_TIME; // DEBUG HARDCODE WAIT TIME.
-        var waitTimeSecs =  Math.ceil((waitTime - $.now()) / 1000);
-        if(waitTimeSecs < 0 || waitTimeSecs > this.MAX_WAIT_TIME) { // max wait time is 1 day
-            waitTimeSecs = 0;
-            return false;
+    flipIfNotFocused: function(input, card) {
+        if(!input.is(':focus')) {
+            this.flipCard(card);
         }
-
-        // Stop animations from queuing up. Setting $.support.transition to 'false' forces
-        // the jquery.timeTo.js tick function to call 'stop' before adding the next animation
-        // in its setTimeout timer call.
-        $.support.transition = false;
-        $('#countdown').timeTo({
-            seconds: waitTimeSecs,
-            theme: 'black',
-            fontSize: (Util.isMobile() ? 36 : 78),
-            countdown: true,
-            start: true,
-            countdownAlertLimit: this.COUNTDOWN_LIMIT_ALERT,
-            callback: function() {
-                $('#countdown div').addClass('timeTo-alert');
-                // Draw user's attention to completed countdown timer.
-                $('#countdown').addClass('flash');
-                setTimeout(function() {
-                    $('#countdown').removeClass('flash');
-                }, 3000);
-            }
-        });
-
-        if(waitTimeSecs <= this.COUNTDOWN_LIMIT_ALERT) {
-            $('#countdown div').addClass('timeTo-alert');
-        } else {
-            $('#countdown div').removeClass('timeTo-alert');
-        }
-
-        if(waitTimeSecs <= 0) {
-            // Bit of a hack, but there is no function to reset the timer
-            // without losing the original font settings.
-            $('#countdown').timeTo('stop');
-            $('#countdown ul li').text(0);
-        }
-
-        return waitTimeSecs !== 0;
-    },
-
-    displayAverageTime: function(averageWaitTime) {
-        $('#countdown').timeTo({
-            seconds: averageWaitTime/1000,
-            start: false,
-            theme: 'black',
-            fontSize: (Util.isMobile() ? 36 : 78),
-            countdown: false
-        });
-    },
-
-    serviceNumberPulse: function() {
-        $('#service-number input').focus();
-        setTimeout(function() {
-            Util.scrollToElement($('#service-number'));
-        }, 1000); // Allow focus event to complete.
-
-        $('#service-number').addClass('pulse');
-        setTimeout(function() {
-            $('#service-number').removeClass('pulse');
-        }, 3000);
     }
 });

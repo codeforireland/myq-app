@@ -1,19 +1,47 @@
-#feedback {
+.feedback {
     display: none;
-    margin-bottom: 1em;
-    position: relative; /* Required for mask */
+    position: absolute;
+    width: 100%;
+    z-index: 1032; /* Just higher than modal mask. */
+    top: 50px;
+    box-shadow: 0 5px 2px rgba(0, 0, 0, 0.2);
+    background: white;
+
+    .form-inline {
+        padding: 10px;
+        border-radius: 3px;
+    }
 
     .form-group {
         display: block;
     }
 
     textarea {
-        width: 100%;
+        width: 100% !important;
         margin-bottom: 5px;
         min-height: 94px;
         transition: height 0.2s;
         -webkit-transition: height 0.2s;
         -moz-transition: height 0.2s;
+    }
+
+    .submit {
+        padding: 10px;
+        text-align: center;
+        background-color: #32AAAE;
+        width: 250px;
+        margin: 20px auto auto auto;
+        border-radius: 3px;
+        color: white;
+        margin-bottom: 5px;
+        max-width: 100%;
+        cursor: pointer;
+    }
+
+    .loader {
+        margin: 0;
+        width: 0%;
+        border-top: solid #32AAAE 3px;
     }
 
     &.invalid {

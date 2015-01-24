@@ -9,16 +9,22 @@ sass --watch css/app.scss
 
 Remove trailing white space from all TXT files.
 -----------------------------------------------
-git diff --cached find . -type f -name '*.txt' -exec sed --in-place 's/[[:space:]]\+$//' {} \+ 
+git diff --cached find . -type f -name '*.txt' -exec sed --in-place 's/[[:space:]]\+$//' {} \+
 
 Replace tabs with whitespace for all HTML files.
 ------------------------------------------------
 find -name '*.html' -type f -exec sed -i 's/\t/    /g' {} \;
 
+DOING
+=====
+
+** Update CSS to use bootstrap grid class instead of having to embed divs within other divs.
+
+* Need to reduce dependency on twitter bootstrap.
+* Consolidate colours in SASS.
+
 TODO
 ====
-
-* Apply new design.
 
 * Minify JS, CSS and HTML.
 
@@ -29,5 +35,7 @@ TODO
 * Auto-update service time.
 
 * Add Bower and Grunt build support.
+
+* Move from mustache.js to underscore.js
 
 * Investigate live editing of markup via Chrome.
