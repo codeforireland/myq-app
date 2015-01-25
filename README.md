@@ -20,18 +20,18 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
-* Consolidate colours in SASS.
+* Auto-update service time.
 
 TODO
 ====
+
+* Consolidate colours in SASS.
 
 * Minify JS, CSS and HTML.
 
 * Introduce RequireJS.
 
 * Split queue.html into individual template files (one per view)
-
-* Auto-update service time.
 
 * Add Bower and Grunt build support.
 
