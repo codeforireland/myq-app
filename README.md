@@ -20,6 +20,7 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
+* Display Q name in title bar when faded in.
 * Auto-update service time.
 
 TODO
