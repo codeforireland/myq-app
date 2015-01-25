@@ -1,6 +1,6 @@
 app.AboutView = Backbone.View.extend({
 
-    className: 'about-app',
+    className: 'about-app col-sm-6 col-sm-offset-6',
 
     template: 'about-view-tpl',
 

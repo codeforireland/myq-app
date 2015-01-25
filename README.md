@@ -18,9 +18,8 @@ find -name '*.html' -type f -exec sed -i 's/\t/    /g' {} \;
 DOING
 =====
 
-** Update CSS to use bootstrap grid class instead of having to embed divs within other divs.
+Latest changes deployed to http://dev.myq.ie
 
-* Need to reduce dependency on twitter bootstrap.
 * Consolidate colours in SASS.
 
 TODO

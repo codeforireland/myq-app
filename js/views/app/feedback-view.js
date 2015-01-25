@@ -1,6 +1,6 @@
 app.FeedbackView = Backbone.View.extend({
 
-    className: 'feedback',
+    className: 'feedback col-xs-12 col-sm-6 col-sm-offset-6',
 
     template: 'feedback-view-tpl',
 
@@ -14,7 +14,7 @@ app.FeedbackView = Backbone.View.extend({
         app.navbarView.on('feedback', $.proxy(this.render, this));
     },
 
-    render: function (container) {
+    render: function () {
         Util.showMask();
 
         this.$el.mustache(this.template);

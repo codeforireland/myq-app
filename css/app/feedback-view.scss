@@ -1,7 +1,6 @@
 .feedback {
     display: none;
     position: absolute;
-    width: 100%;
     z-index: 1032; /* Just higher than modal mask. */
     top: 50px;
     box-shadow: 0 5px 2px rgba(0, 0, 0, 0.2);
