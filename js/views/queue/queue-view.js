@@ -37,6 +37,13 @@ app.QueueView = Backbone.View.extend({
         backArrow.removeClass('hidden');
         var self = this;
 
+        // Update NavBar with current queue name.
+        if(Util.isMobile()) {
+            $('.navbar-brand.title').html(this.model.get('queueInfo').name);
+        } else {
+            $('.navbar-brand.title').html(this.model.get('address').name);
+        }
+
         backArrow.off().on('click', function() {
             _.each(self.timers, function(item) {
                 clearInterval(item);
@@ -66,7 +73,6 @@ app.QueueView = Backbone.View.extend({
 
         // Remove any old notification messages.
         $('.notifications .alert').remove();
-
 
         if(!this.model.get('isOpen')) {
             this.$('.status span').css('visibility', 'hidden');
