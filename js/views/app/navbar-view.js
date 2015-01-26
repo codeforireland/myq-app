@@ -19,8 +19,10 @@ app.NavbarView = Backbone.View.extend({
     },
 
     fadeNavBarOnScroll: function() {
-        var opacity = document.body.scrollTop*2/100;
-        this.$el.css('background-color', 'rgba(255,255,255,' + opacity +')');
+        var opacity = Math.min(document.body.scrollTop*2/100, 0.9);
+        var backgroundColor = this.$el.css('background-color');
+
+        this.$el.css('background-color',  backgroundColor.replace(/,\s([^,]+)$/, ', ' + opacity + ')'));
         this.$('.title').css('opacity', opacity);
     },
 

@@ -28,11 +28,13 @@
 
     /* Increase tap area */
     .close:before {
-        content: ' ';
-        height: 3em;
-        width: 4em;
         position: absolute;
-        right: -1em;
+        right: -10px;
         top: 0;
+
+        height: 50px;
+        width: 50px;
+
+        content: '';
     }
 }

@@ -32,8 +32,8 @@ app.FeedbackView = Backbone.View.extend({
         // Restrict the amout of text that can be entered.
         this.$textarea.maxlength({
             alwaysShow: true,
-            warningClass: "label label-info",
-            limitReachedClass: "label label-warning",
+            warningClass: 'label label-info',
+            limitReachedClass: 'label label-warning',
             placement: 'top'
         });
     },

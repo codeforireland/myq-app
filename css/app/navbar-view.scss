@@ -1,42 +1,52 @@
 .navbar {
     border: none;
     background-image: none;
-    background-color: rgba(255, 255, 255, 0);
+
+    background-color: rgba($navbar-color, 0);
 
     .navbar-header {
         background-color: transparent;
 
         .navbar-brand {
             &.back-button {
-                padding: 17px 0 15px 0;
-                cursor: pointer;
-                transform: rotate(180deg);
-                color: rgb(50, 170, 174);
-                text-shadow: none;
-                font-size: 14px;
-                margin-left: 10px;
                 z-index: 1;
+
+                margin-left: 10px;
+                padding: 17px 0 15px 0;
+
+                color: rgb(50, 170, 174);
+
+                text-shadow: none;
+
+                cursor: pointer;
+
+                -webkit-transform: rotate(180deg);
             }
 
             &.back-button:after { /* Increase clickable area. */
-                content: '';
-                padding: 25px;
                 position: absolute;
-                right: -10px;
                 bottom: 0;
+                right: -10px;
+
+                padding: 25px;
+
+                content: '';
             }
 
             &.title {
                 padding-left: 10px;
-                color: grey;
+
+                color: $font-color;
+
                 opacity: 0;
             }
         }
 
         .navbar-toggle {
             border-color: transparent;
-            transition-duration: 0.25s;
-            transform: rotate(90deg);
+
+            -webkit-transform: rotate(90deg);
+            -webkit-transition-duration: 250ms;
 
             &:focus, &:hover {
                 background-color: transparent;
@@ -47,12 +57,12 @@
             }
 
             .icon-bar {
-                background-color: rgb(50, 170, 174);
+                background-color: $button-color;
             }
         }
     }
 
     .navbar-collapse {
-        background-color: white;
+        background-color: $navbar-color;
     }
 }

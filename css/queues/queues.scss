@@ -1,31 +1,36 @@
-
 .queue-list-view {
-    background-color: #F5F5F5;
+    background-color: $list-color;
 
     .myq-cover {
         padding: 80px 0;
-        text-align: center;
-        font-size: 52px;
+
         background-image: url('../images/myq-cover.jpg');
+        background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+
+        color: $font-color;
+
         font-family: 'Open Sans', sans-serif;
-        color: rgba(0, 0, 0, 0.4);
+        font-size: 56px;
+        text-align: center;
     }
 
     .pick-a-queue {
         margin-top: -40px;
         padding: 10px;
-        background-color: rgba(0, 0, 0, 0.4);
-        color: white;
+
+        background-color: $picker-color;
+        color: $picker-font-color;
     }
 
     .down-arrow {
-        width: 0;
         margin-left: 30px;
+        width: 0;
+
         border-left: 15px solid transparent;
         border-right: 15px solid transparent;
-        border-top: 20px solid #959595;
+        border-top: 20px solid $picker-arrow-color;
     }
 
     ul#queues {
@@ -34,19 +39,23 @@
 
         li {
             padding: 10px;
+
+            border-bottom: 1px solid $list-separator-color;
+
+            color: $muted-font-color;
+
             list-style-type: none;
-            border-bottom: 2px solid #DCDCDC;
-            color: #B1B1B1;
 
             a {
-                color: #32A8AE;
+                color: $button-color;
+
+                font-size: $title-font-size;
                 text-decoration: none;
-                font-size: 24px;
             }
 
             &.closed {
                 a {
-                    color: #B1B1B1;
+                    color: $muted-font-color;
                 }
             }
 

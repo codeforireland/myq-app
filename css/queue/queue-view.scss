@@ -1,24 +1,27 @@
 .queue-view {
-    color: #666;
+    color: $font-color;
 
     .header {
         position: relative;
 
         .myq-cover {
             position: relative;
+
             padding: 80px 20px 1px 20px;
 
             background-image: url('../images/myq-cover.png');
+            background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
 
             .title {
-                font-size: 22px;
+                font-size: $title-font-size;
             }
 
             hr {
                 margin: 0;
-                border-color: #868788;
+
+                border-color: rgba($font-color, 0.2);
             }
 
             .status {
@@ -26,8 +29,11 @@
 
                 span {
                     float: right;
-                    color: rgb(50, 170, 174);
-                    font-size: 20px;
+
+                    color: $button-color;
+
+                    font-size: $title-font-size;
+
                     cursor: pointer;
 
                     transition-duration: 0.5s;
@@ -37,12 +43,14 @@
                     }
 
                     &:after { /* Increase clickable area. */
-                        content: '';
                         position: absolute;
-                        width: 60px;
-                        height: 40px;
                         left: -20px;
                         top: -10px;
+
+                        width: 60px;
+                        height: 40px;
+
+                        content: '';
                     }
                 }
             }
@@ -50,34 +58,39 @@
     }
 
     .inner-content {
-        margin: auto;
         position: relative;
 
+        margin: auto;
+
         .details {
-            display: none;
             position: absolute;
-            z-index: 3;
             left: 0;
             right: 0;
+            z-index: 3;
+
+            display: none;
 
             .details-holder {
-                background-color: white;
                 margin: 7px;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-                border-radius: 3px;
                 padding: 20px;
+
+                border-radius: 3px;
+
+                background-color: $card-color;
+                box-shadow: $card-shadow-color;
 
                 .description {
                     margin-bottom: 15px;
                 }
 
                 a {
-                    color: rgba(66, 139, 202, 0.75);
+                    color: $button-color;
                 }
 
                 .title {
                     padding-bottom: 5px;
-                    font-size: 20px;
+
+                    font-size: $title-font-size;
                 }
 
                 .address {
@@ -85,23 +98,28 @@
                 }
 
                 .googleMap img {
-                    width: 100%;
                     max-width: 640px;
+                    width: 100%;
                 }
 
                 .googleMap .overlay {
                     position: absolute;
                     top: 50%;
                     left: 50%;
+
                     margin: auto auto;
-                    text-align: left;
-                    line-height: 1.5em;
-                    background-color: white;
-                    color: #333;
-                    -webkit-border-radius: 0.6em;
                     padding: 5px;
+
+                    -webkit-border-radius: 3px;
+
+                    background-color: $card-color;
+                    box-shadow: $card-raised-shadow-color;
+                    color: $font-color;
+
+                    text-align: left;
+                    line-height: 1.5;
+
                     opacity: 0;
-                    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 0px;
                 }
 
                 .hours {
@@ -117,25 +135,29 @@
         .wait-time {
             display: none;
             padding: 10px;
-            background-color: white;
+
+            background-color: $card-color;
 
             img {
                 float: left;
-                vertical-align: middle;
+
                 margin: 20px 20px 20px 0px;
+
+                vertical-align: middle;
             }
 
             .title {
                 margin-top: 20px;
-                font-size: 22px;
+
+                font-size: $title-font-size;
             }
 
             .time-hour, .time-minute, .time-second {
-                font-size: 44px;
+                font-size: 45px;
             }
 
             .time-text {
-                font-size: 24px;
+                font-size: $title-font-size;
             }
         }
 
@@ -143,29 +165,37 @@
             margin: 7px;
 
             .content {
-                background-color: white;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.1);
                 border-radius: 3px;
+
+                background-color: $card-color;
+                box-shadow: $card-shadow-color;
             }
         }
 
         .flip-button {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 23px;
+            bottom: 10px;
+            right: 10px;
+
             height: 14px;
+            width: 23px;
+
             background-image: url('/images/back.png');
-            opacity: 0.5;
+            background-size: cover;
+
+            opacity: 0.54;
+
             cursor: pointer;
 
             &::before { /* Increase clickable area. */
-                content: "";
                 position: absolute;
                 bottom: -5px;
                 right: -5px;
+
                 height: 100px;
                 width: 50px;
+
+                content: '';
             }
         }
 
@@ -173,10 +203,11 @@
             .loader {
                 margin: 0;
                 width: 0%;
-                border-top: solid #32AAAE 3px;
+
+                border-top: solid $button-color 3px;
             }
 
-            color: #C0C0C0;
+            color: $font-color;
         }
 
         .wait-time, .service-number {
@@ -188,18 +219,22 @@
 
             .icon {
                 float: left;
-                vertical-align: middle;
+
                 margin: 35px 20px 20px 0px;
+
+                vertical-align: middle;
             }
 
             .title {
                 margin-top: 10px;
-                font-size: 22px;
+
+                font-size: $title-font-size;
             }
 
             .number {
-                font-size: 44px;
                 margin-left: 70px;
+
+                font-size: 45px;
             }
         }
 
@@ -214,73 +249,88 @@
                 padding: 20px;
 
                 .header {
-                    font-size: 22px;
                     margin-bottom: 10px;
+
+                    font-size: $title-font-size;
                 }
 
                 input {
-                    background-color: #F0F0F0;
-                    border: none;
-                    padding: 15px;
-                    width: 250px;
-                    margin: auto;
                     display: block;
-                    border-radius: 3px;
+                    margin: auto;
+                    padding: 15px;
                     max-width: 100%;
+                    width: 250px;
+
+                    border: none;
+                    border-radius: 3px;
+
+                    background-color: $background-color;
                 }
 
                 .submit {
                     padding: 10px;
-                    text-align: center;
-                    background-color: #32AAAE;
+                    margin: 20px auto 5px auto;
                     width: 250px;
-                    margin: 20px auto auto auto;
-                    border-radius: 3px;
-                    color: white;
-                    margin-bottom: 5px;
                     max-width: 100%;
+
+                    border-radius: 3px;
+
+                    background-color: $button-color;
+                    color: $button-font-color;
+
+                    text-align: center;
+
                     cursor: pointer;
                 }
             }
 
             .flip-button {
                 display: none;
+
                 cursor: pointer;
             }
         }
 
         .notification {
-            display: none;
             position: relative;
+            z-index: 1;
+
+            display: none;
             margin-top: -20px;
             margin-bottom: -20px;
-            z-index: 1;
+
             opacity: 0.95;
 
             .dismiss {
                 position: absolute;
                 top: 25px;
                 right: 10px;
-                color: white;
+
+                color: $button-font-color;
+
                 font-weight: bold;
             }
 
             .text {
                 padding: 20px;
-                background-color: #C6D67E;
-                color: white;
-                font-size: 18px;
+
+                background-color: $notification-color;
+                color: $button-font-color;
+
+                font-size: $title-font-size;
             }
 
             .up-arrow {
-                width: 0;
                 margin: auto;
+
+                width: 0;
+
                 border-left: 20px solid transparent;
                 border-right: 20px solid transparent;
             }
 
             .up-arrow {
-                border-bottom: 20px solid #C6D67E;
+                border-bottom: 20px solid $notification-color;
             }
 
             &.estimated {
@@ -296,10 +346,12 @@
     }
 
     .form-mask:before {
-        content: "";
-        height: 100%;
-        width: 100%;
         position: absolute;
         z-index: 2;
+
+        height: 100%;
+        width: 100%;
+
+        content: '';
     }
 }

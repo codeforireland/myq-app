@@ -8,12 +8,13 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
+* Replace -webkit prefixes with SASS functions.
+
 * Auto-update service time.
+
 
 TODO
 ====
-
-* Consolidate colours in SASS.
 
 * Minify JS, CSS and HTML.
 

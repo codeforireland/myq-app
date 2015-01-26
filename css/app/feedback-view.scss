@@ -1,21 +1,31 @@
 .feedback {
-    display: none;
     position: absolute;
-    z-index: 1032; /* Just higher than modal mask. */
     top: 50px;
-    box-shadow: 0 5px 2px rgba(0, 0, 0, 0.2);
-    background: white;
+    z-index: 1032; /* Just higher than modal mask. */
 
-    .close:after { /* Increase clickable area. */
-        content: '';
-        padding: 25px;
-        position: absolute;
-        right: 0;
-        top: 0;
+    display: none;
+
+    background-color: $card-color;
+    box-shadow: $card-raised-shadow-color;
+
+    .close {
+        margin-right: -8px;
+        margin-top: 2px;
+
+        &.close:after { /* Increase clickable area. */
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            padding: 30px;
+
+            content: '';
+        }
     }
 
     .form-inline {
         padding: 10px;
+
         border-radius: 3px;
     }
 
@@ -24,31 +34,36 @@
     }
 
     textarea {
-        width: 100% !important;
         margin-bottom: 5px;
         min-height: 94px;
+        width: 100% !important;
+
         transition: height 0.2s;
         -webkit-transition: height 0.2s;
         -moz-transition: height 0.2s;
     }
 
     .submit {
+        margin: 20px auto 5px auto;
         padding: 10px;
-        text-align: center;
-        background-color: #32AAAE;
         width: 250px;
-        margin: 20px auto auto auto;
-        border-radius: 3px;
-        color: white;
-        margin-bottom: 5px;
         max-width: 100%;
+
+        border-radius: 3px;
+
+        background-color: $button-color;
+        color: $button-font-color;
+
+        text-align: center;
+
         cursor: pointer;
     }
 
     .loader {
         margin: 0;
         width: 0%;
-        border-top: solid #32AAAE 3px;
+
+        border-top: solid $button-color 3px;
     }
 
     &.invalid {
@@ -56,23 +71,26 @@
         -webkit-animation: shake .5s linear;
 
         textarea {
-            border-color: red;
+            border-color: $error-color;
         }
 
         .rating-input .glyphicon {
-            color: red;
+            color: $error-color;
         }
     }
 
     .rating-input {
-        font-size: 3em;
-        color: #B2B2B2;
+        color: $muted-font-color;
+
+        font-size: 34px;
 
         .glyphicon-star {
-            background: -webkit-linear-gradient(#FFE800, #F59F00);
-            -webkit-background-clip: text;
+            background: -webkit-linear-gradient($rating-star-top-color, $rating-star-bottom-color);
+
+            color: $rating-star-top-color;
             -webkit-text-fill-color: transparent;
-            color: #FFE800;
+
+            -webkit-background-clip: text;
         }
     }
 

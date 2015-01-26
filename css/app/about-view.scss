@@ -1,44 +1,42 @@
 .about-app {
     position: absolute;
-    z-index: 1032; /* Just higher than modal mask. */
     top: 50px;
-    background-color: white;
-    padding: 10px;
-    color: #777;
-    box-shadow: 0 5px 2px rgba(0, 0, 0, 0.2);
-    display: none;
+    z-index: 1032; /* Just higher than modal mask. */
 
-    .close:after { /* Increase clickable area. */
-        content: '';
-        padding: 25px;
-        position: absolute;
-        right: 0;
-        top: 0;
+    display: none;
+    padding: 10px;
+
+    background-color: $card-color;
+    box-shadow: $card-raised-shadow-color;
+    color: $font-color;
+
+    a {
+        color: $button-color;
+    }
+
+    .close {
+        margin: 3px 10px 0 0;
+
+        &.close:after { /* Increase clickable area. */
+            position: absolute;
+            right: 0;
+            top: 0;
+
+            padding: 30px;
+
+            content: '';
+        }
     }
 
     .title {
-        color: rgba(0, 0, 0, 0.8);
-        font-size: 1.5em;
+        color: $font-color;
+
+        font-size: $title-font-size;
+        font-weight: bold;
     }
 
     .cfi, .disclaimer {
         margin-top: 10px;
         margin-bottom: 0;
-    }
-
-    .top {
-        text-align: right;
-        margin-right: 1em;
-        text-decoration: underline;
-        cursor: pointer;
-    }
-
-    /* Increase tap area */
-    .top:before {
-        content: ' ';
-        height: 3em;
-        width: 3em;
-        position: absolute;
-        right: 2em;
     }
 }
