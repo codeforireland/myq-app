@@ -1,0 +1,33 @@
+$title-font-size: 20px;
+$font-size: 14px;
+
+$background-color: #DFDFDF;
+
+$font-color: rgba(0, 0, 0, 0.54);
+$muted-font-color: rgba(0, 0, 0, 0.34);
+
+$navbar-color: rgb(255, 255, 255); /* Must use rgb format as opacity is changed in JavaScript. */
+
+$list-color: #F5F5F5;
+$list-separator-color: #DCDCDC;
+
+$card-color: white;
+$card-shadow-color: 0 1px 2px rgba(0, 0, 0, 0.2);
+$card-raised-shadow-color: 0 5px 2px rgba(0, 0, 0, 0.2);
+
+$input-shadow-color: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(50, 170, 174, 0.6);
+$input-border-color: rgba(50, 170, 174, 0.6);
+
+$button-color: #32AAAE;
+$button-font-color: white;
+
+$error-color: red;
+
+$notification-color: #C6D67E;
+
+$rating-star-top-color: #FFE800;
+$rating-star-bottom-color: #F59F00;
+
+$picker-color: rgba(0, 0, 0, 0.4);
+$picker-arrow-color: rgba(0,0,0,0.35);
+$picker-font-color: white;
