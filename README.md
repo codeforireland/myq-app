@@ -28,7 +28,11 @@ TODO
 
 * Investigate live editing of markup via Chrome.
 
-Notes
-=====
+Building
+========
 
-To compile JS/SASS run <Grunt> from root folder.
+* Install Ruby (https://www.ruby-lang.org/en/downloads/)
+* Install Compass (http://compass-style.org/install/)
+* Install Grunt (http://gruntjs.com/getting-started)
+
+* To compile JS/SASS run "Grunt" from root folder.
