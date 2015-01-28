@@ -13,7 +13,10 @@ app.AppRouter = Backbone.Router.extend({
     switchView : function(view) {
         window.scrollTo(0, 0);
 
-        this.view && this.view.remove();
+        if(this.view) {
+            this.view.remove();
+        }
+
         this.view = view;
         app.appView.$content.append(view.el);
     },

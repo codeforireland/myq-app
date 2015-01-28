@@ -95,7 +95,7 @@ Util.scrollToElement = function(element) {
     if(!(element instanceof jQuery)) {
         scrollTo = $(element.href.substr(element.href.indexOf('#')));
     } else {
-        scrollTo = $(element)
+        scrollTo = $(element);
     }
 
     var offset = scrollTo.offset().top - $('.container').offset().top;
@@ -109,7 +109,7 @@ Util.scrollToElement = function(element) {
  */
 Util.zeroPad = function(value, length) {
     if(value !== null && typeof value !== 'undefined') {
-        var value = value.toString();
+        value = value.toString();
         while (value.length < length){
             value = '0' + value;
         }

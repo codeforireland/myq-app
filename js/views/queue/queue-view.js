@@ -174,11 +174,11 @@ app.QueueView = Backbone.View.extend({
         // Toggle address on click.
         googleMapEl.click(function(e) {
             var opacity = address.css('opacity');
-            if(opacity == 0) {
+            if(opacity === '0') {
                 // Prevent anchor working until address is visible.
                 e.preventDefault();
             }
-            address.animate({opacity: (opacity == 1 ? 0 : 1)});
+            address.animate({opacity: (opacity === '1' ? 0 : 1)});
         });
     },
 
@@ -263,7 +263,7 @@ app.QueueView = Backbone.View.extend({
             }, FLIP_ANIMATION_DURATION);
         }
 
-        Util.scrollToElement(card)
+        Util.scrollToElement(card);
     },
 
     dismissNotification: function(e) {
@@ -274,7 +274,7 @@ app.QueueView = Backbone.View.extend({
         // DEBUG TBR
         //waitTime = $.now() + this.DEBUG_TIME;
 
-        var waitTime = new Date(waitTime);
+        waitTime = new Date(waitTime);
 
         var hours = waitTime.getHours();
         var minutes = waitTime.getMinutes();

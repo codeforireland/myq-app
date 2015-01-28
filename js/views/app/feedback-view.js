@@ -26,7 +26,7 @@ app.FeedbackView = Backbone.View.extend({
         this.$input = this.$('input'); // rating control creates a new input, so cache it instead.
 
         // Auto increase the size of the input area.
-        this.$textarea = this.$('textarea')
+        this.$textarea = this.$('textarea');
         this.$textarea.autosize();
 
         // Restrict the amout of text that can be entered.

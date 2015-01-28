@@ -30,7 +30,7 @@ app.NavbarView = Backbone.View.extend({
         e.preventDefault();
 
         // Hide navbar
-        $('.collapse').collapse('hide')
+        $('.collapse').collapse('hide');
         $('.navbar-toggle').addClass('collapsed');
 
         // Extract event and trigger it.

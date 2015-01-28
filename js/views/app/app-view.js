@@ -23,14 +23,14 @@ app.AppView = Backbone.View.extend({
         this.$el.append(new app.FeedbackView().el);
         this.$el.append(new app.AboutView().el);
 
-        this.$content = $('<div class="content"></div>')
+        this.$content = $('<div class="content"></div>');
         this.$container.append(this.$content);
     },
 
     closeNavbar: function(e) {
         // Close dropdown menu if clicked outside.
         if(this.$('.navbar-collapse.navbar-right.collapse.in').is(':visible')) {
-            this.$('.collapse').collapse('hide')
+            this.$('.collapse').collapse('hide');
             this.$('.navbar-toggle').addClass('collapsed');
         }
     }

@@ -14,7 +14,9 @@ app.QueueModel = Backbone.Model.extend({
      *
      **/
     sync: function(method, model, options) {
-        options || (options = {});
+        if(typeof options === 'undefined') {
+            options = {};
+        }
 
         options.url = this.url();
         options.contentType = 'application/json';
@@ -67,9 +69,9 @@ app.QueueModel = Backbone.Model.extend({
         closingDate.setMinutes(openingTime.closingMinute);
 
         if(now >= openingDate && now <= closingDate) {
-            this.set('isOpen', true);;
+            this.set('isOpen', true);
         } else {
-            this.set('isOpen', false);;
+            this.set('isOpen', false);
         }
     }
 });
