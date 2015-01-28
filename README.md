@@ -32,12 +32,3 @@ Notes
 =====
 
 To compile JS/SASS run <Grunt> from root folder.
-
-
-Remove trailing white space from all TXT files.
------------------------------------------------
-git diff --cached find . -type f -name '*.txt' -exec sed --in-place 's/[[:space:]]\+$//' {} \+
-
-Replace tabs with whitespace for all HTML files.
-------------------------------------------------
-find -name '*.html' -type f -exec sed -i 's/\t/    /g' {} \;
