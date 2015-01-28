@@ -2,3 +2,6 @@ css/*.css
 css/app.css.map
 .sass-cache/
 .bash_history
+node_modules/
+build/
+deploy/

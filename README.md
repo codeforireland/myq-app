@@ -16,13 +16,13 @@ Latest changes deployed to http://dev.myq.ie
 TODO
 ====
 
-* Minify JS, CSS and HTML.
+* Minify HTML.
 
 * Introduce RequireJS.
 
 * Split queue.html into individual template files (one per view)
 
-* Add Bower and Grunt build support.
+* Add Bower support.
 
 * Move from mustache.js to underscore.js
 
@@ -31,9 +31,8 @@ TODO
 Notes
 =====
 
-Compile SASS on the fly
------------------------
-sass --watch css/app.scss
+To compile JS/SASS run <Grunt> from root folder.
+
 
 Remove trailing white space from all TXT files.
 -----------------------------------------------
