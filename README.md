@@ -18,6 +18,8 @@ TODO
 
 * Minify HTML.
 
+* Introduce SASS partials by adding underscores to beginning of SASS files that are already being included. Will need to update Grunt configuration as well.
+
 * Introduce RequireJS.
 
 * Split queue.html into individual template files (one per view)
