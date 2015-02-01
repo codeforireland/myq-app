@@ -12,7 +12,7 @@
             background-image: url('../images/myq-cover.png');
             background-position: center;
             background-repeat: no-repeat;
-            background-size: cover;
+            @include background-size(cover);
 
             .title {
                 font-size: $title-font-size;
@@ -36,10 +36,10 @@
 
                     cursor: pointer;
 
-                    transition-duration: 0.5s;
+                    @include transition-duration(500ms);
 
                     &.rotate {
-                        transform: rotate(360deg);
+                        @include transform(rotate(360deg));
                     }
 
                     &:after { /* Increase clickable area. */
@@ -74,10 +74,10 @@
                 margin: 7px;
                 padding: 20px;
 
-                border-radius: 3px;
+                @include border-radius(3px);
 
                 background-color: $card-color;
-                box-shadow: $card-shadow-color;
+                @include box-shadow($card-shadow-color);
 
                 .description {
                     margin-bottom: 15px;
@@ -110,10 +110,10 @@
                     margin: auto auto;
                     padding: 5px;
 
-                    -webkit-border-radius: 3px;
+                    @include border-radius(3px);
 
                     background-color: $card-color;
-                    box-shadow: $card-raised-shadow-color;
+                    @include box-shadow($card-raised-shadow-color);
                     color: $font-color;
 
                     text-align: left;
@@ -165,10 +165,10 @@
             margin: 7px;
 
             .content {
-                border-radius: 3px;
+                @include border-radius(3px);
 
                 background-color: $card-color;
-                box-shadow: $card-shadow-color;
+                @include box-shadow($card-shadow-color);
             }
         }
 
@@ -181,7 +181,7 @@
             width: 23px;
 
             background-image: url('/images/back.png');
-            background-size: cover;
+            @include background-size(cover);
 
             opacity: 0.54;
 
@@ -192,7 +192,7 @@
                 bottom: -5px;
                 right: -5px;
 
-                height: 100px;
+                height: 50px;
                 width: 50px;
 
                 content: '';
@@ -205,6 +205,8 @@
                 width: 0%;
 
                 border-top: solid $button-color 3px;
+
+                text-align: left;
             }
 
             color: $font-color;
@@ -215,6 +217,11 @@
         }
 
         .ticket-number-front, .service-number-front {
+            /* Centre element */
+            position: relative;
+            top: 50%;
+            @include transform(translateY(-50%));
+
             padding: 10px;
 
             .icon {
@@ -262,7 +269,7 @@
                     width: 250px;
 
                     border: none;
-                    border-radius: 3px;
+                    @include border-radius(3px);
 
                     background-color: $background-color;
                 }
@@ -273,7 +280,7 @@
                     width: 250px;
                     max-width: 100%;
 
-                    border-radius: 3px;
+                    @include border-radius(3px);
 
                     background-color: $button-color;
                     color: $button-font-color;

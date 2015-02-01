@@ -33,7 +33,7 @@ img {
 
     background-color: rgba(0, 0, 0, 0.2);
 
-    -webkit-transition: opacity 400ms ease-out;
+    @include transition(opacity, 400ms, ease-out);
 }
 
 .clear {
@@ -42,22 +42,27 @@ img {
 
 input:focus {
     border-color: $input-border-color;
-    -webkit-box-shadow: $input-shadow-color;
-    box-shadow: $input-shadow-color;
+    @include box-shadow($input-shadow-color);
 
     outline: 0;
 }
 
 .cardholder {
-    -webkit-perspective: 1000;
-    -webkit-transform: translate3d(0,0,0); // Bizarrely, if this isn't applied the click handlers don't work properly.
-    -webkit-user-select: none;
-
     .card {
         position: relative;
 
-        -webkit-transform-style: preserve-3d;
-        -webkit-transition: -webkit-transform 0.5s, height 0.25s;
+        @include transform-style(preserve-3d);
+        @include transition(0.5s);
+
+        &.flipped {
+            .back {
+                @include transform(perspective(1000px) rotateY(0deg));
+            }
+
+            .front {
+                @include transform(perspective(1000px) rotateY(-180deg));
+            }
+        }
 
         .back, .front {
             position: absolute;
@@ -66,20 +71,20 @@ input:focus {
 
             width: 100%;
 
-            -webkit-backface-visibility: hidden;
-            -webkit-transform: translate3d(0,0,0); // Fix impossible bug where backface-visibility leaves visual artefacts from other side of card.
+            @include transform-style(preserve-3d);
+            @include backface-visibility(hidden);
+            @include transition(0.5s);
         }
 
         .front {
             z-index: 2;
+
+            /* for firefox 31 */
+            @include transform(perspective(1000px) rotateY(0deg));
         }
 
         .back {
-            -webkit-transform: rotateY(-180deg);
-        }
-
-        &.flipped {
-            -webkit-transform: rotateY(-180deg);
+            @include transform(perspective(1000px) rotateY(180deg));
         }
     }
 }

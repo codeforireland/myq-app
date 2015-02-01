@@ -20,7 +20,7 @@
 
                 cursor: pointer;
 
-                -webkit-transform: rotate(180deg);
+                @include transform(rotate(180deg));
             }
 
             &.back-button:after { /* Increase clickable area. */
@@ -45,15 +45,15 @@
         .navbar-toggle {
             border-color: transparent;
 
-            -webkit-transform: rotate(90deg);
-            -webkit-transition-duration: 250ms;
+            @include transform(rotate(90deg));
+            @include transition-duration(250ms);
 
             &:focus, &:hover {
                 background-color: transparent;
             }
 
             &.collapsed {
-                transform: rotate(0deg);
+                @include transform(rotate(0deg));
             }
 
             .icon-bar {

@@ -7,7 +7,7 @@
     padding: 10px;
 
     background-color: $card-color;
-    box-shadow: $card-raised-shadow-color;
+    @include box-shadow($card-raised-shadow-color);
     color: $font-color;
 
     a {

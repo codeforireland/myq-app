@@ -57,15 +57,25 @@ app.QueueView = Backbone.View.extend({
 
         this.addGoogleMap();
 
-        // on resize event:
-        $(window).resize(function() {
-            var serviceCard = $('.service-number .card');
-            if(serviceCard.hasClass('flipped')) {
-                serviceCard.height($('.back', serviceCard).height());
-            } else {
-                serviceCard.height($('.front', serviceCard).height());
-            }
+        // Set card heights to be height of card backs.
+        setTimeout(function() {
+            self.sizeCards();
         });
+
+        $(window).resize($.proxy(this.sizeCards, this));
+    },
+
+    sizeCards: function() {
+        var ticketCard = this.$ticketNumberCard;
+        var height = $('.ticket-number-back', ticketCard).height();
+        $('.front, .content', ticketCard).height(height);
+
+        var serviceCard = this.$serviceNumberCard;
+        height = $('.service-number-back', serviceCard).height();
+        if(height) {
+            serviceCard.height(height);
+            $('.front, .content', serviceCard).height(height);
+        }
     },
 
     render: function () {
@@ -237,33 +247,6 @@ app.QueueView = Backbone.View.extend({
     flipCard: function(eventOrCard) {
         var card = eventOrCard.target ? $(eventOrCard.target).closest('.card') : eventOrCard;
         card.toggleClass('flipped');
-
-        // flipTimer is used to hide the other side of the card
-        // so that it doesn't take up space when the card is flipped.
-        // It needs to be cleared in case the flipCard method is
-        // is re-entered.
-        if(this.flipTimer) {
-            clearInterval(this.flipTimer);
-        }
-
-        var FLIP_ANIMATION_DURATION = 500;
-        if(card.is('.flipped')) {
-            $('.back', card).show();
-            $('.front', card).show();
-            card.height($('.back', card).height());
-            this.flipTimer = setTimeout(function() {
-                $('.front', card).hide();
-            }, FLIP_ANIMATION_DURATION);
-        } else {
-            $('.front', card).show();
-            $('.back', card).show();
-            card.height($('.front', card).height());
-            this.flipTimer = setTimeout(function() {
-                $('.back', card).hide();
-            }, FLIP_ANIMATION_DURATION);
-        }
-
-        Util.scrollToElement(card);
     },
 
     dismissNotification: function(e) {
@@ -334,11 +317,12 @@ app.QueueView = Backbone.View.extend({
                 if(self.displayWaitTime(response.waitingTime, true)) {
                     var showServiceNumber = function() {
                         self.$serviceNumber.show();
+
+                        self.sizeCards();
+
                         if(!self.$serviceNumberCard.hasClass('flipped')) {
                            self.flipCard(self.$serviceNumberCard);
                         }
-
-                        self.$serviceNumberCard.height($('.back', self.$serviceNumberCard).height());
 
                         Util.scrollToElement(self.$serviceNumber);
                     };

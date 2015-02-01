@@ -49,10 +49,11 @@ module.exports = function (grunt) {
         compass: {
             dist: {
                 options: {
-                    sassDir: 'sass',
                     cssDir: 'deploy',
                     environment: 'production',
                     outputStyle: 'compressed',
+                    // environment: 'development',
+                    // outputStyle: 'expanded',
                     specify: 'sass/app.scss'
                 }
             }
@@ -61,6 +62,7 @@ module.exports = function (grunt) {
         watch: {
             files: ['<%= jshint.files %>', 'sass/**/*.scss'],
             tasks: ['concat', 'uglify', 'jshint', 'compass']
+            //tasks: ['concat', 'jshint', 'compass']
         }
     });
 

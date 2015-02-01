@@ -8,17 +8,18 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
-* Replace -webkit prefixes with SASS functions.
+* Get star rating to work in Firefox and IE.
+
+* Horizonally centre elements.
+* Minimise width of cards.
+
+* Minify HTML.
 
 * Auto-update service time.
 
 
 TODO
 ====
-
-* Minify HTML.
-
-* Introduce SASS partials by adding underscores to beginning of SASS files that are already being included. Will need to update Grunt configuration as well.
 
 * Introduce RequireJS.
 
