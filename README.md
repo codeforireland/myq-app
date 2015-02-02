@@ -13,6 +13,8 @@ Latest changes deployed to http://dev.myq.ie
 
 * Minify HTML.
 
+* Introduce grunt-responsive-images (https://github.com/andismith/grunt-responsive-images).
+
 * Auto-update service time.
 
 
