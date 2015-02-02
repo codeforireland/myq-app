@@ -21,10 +21,6 @@ app.FeedbackView = Backbone.View.extend({
 
         this.$el.slideDown();
 
-        // Show star rating
-        this.$('input').rating();
-        this.$input = this.$('input'); // rating control creates a new input, so cache it instead.
-
         // Auto increase the size of the input area.
         this.$textarea = this.$('textarea');
         this.$textarea.autosize();
@@ -53,11 +49,10 @@ app.FeedbackView = Backbone.View.extend({
         e.preventDefault();
         var self = this;
 
-        // Validate feedback form. Must have either
-        // a star rating or a comment.
-        var starRating = this.$input.val();
+        // Validate feedback form. Must have either a star rating or a comment.
+        var starRating = this.$('input:checked').val();
         var feedbackText = this.$textarea.val();
-        if(starRating == '0') {
+        if(!starRating) {
             this.$el.addClass('invalid');
             setTimeout(function() {
                 self.$el.removeClass('invalid');

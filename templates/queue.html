@@ -44,7 +44,15 @@
         <div class="close">×</div>
 
         <div class="form-group">
-            <input type="number" data-min="1" data-max="5" class="rating" data-empty-value="0" />
+
+            <span class="star-rating">
+                <input type="radio" name="rating" value="1"><i></i>
+                <input type="radio" name="rating" value="2"><i></i>
+                <input type="radio" name="rating" value="3"><i></i>
+                <input type="radio" name="rating" value="4"><i></i>
+                <input type="radio" name="rating" value="5"><i></i>
+            </span>
+
             <textarea maxlength="50" class="form-control" placeholder="Tell us what you think of the app."></textarea>
             <div class="submit">SUBMIT</div>
         </div>

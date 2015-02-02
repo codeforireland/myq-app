@@ -8,8 +8,6 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
-* Get star rating to work in Firefox and IE.
-
 * Horizonally centre elements.
 * Minimise width of cards.
 
