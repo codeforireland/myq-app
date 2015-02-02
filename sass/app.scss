@@ -48,6 +48,8 @@ input:focus {
 }
 
 .cardholder {
+    @include perspective(2000px); /* Required for iOS 8.1 Safari */
+
     .card {
         position: relative;
 
@@ -79,7 +81,7 @@ input:focus {
         .front {
             z-index: 2;
 
-            /* for firefox 31 */
+            /* Required for Firefox 31 */
             @include transform(perspective(1000px) rotateY(0deg));
         }
 

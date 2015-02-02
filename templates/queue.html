@@ -166,6 +166,45 @@
             </div>
         </div>
 
+        <div class="ticket-number">
+            <div class="cardholder">
+                <div class="card flipped">
+                    <div class="front">
+                        <div class="content">
+                            <div class="ticket-number-front">
+                                <img class="icon" src="images/your-ticket.png" />
+                                <div class="title">Your ticket number</div>
+                                <div class="number"></div>
+                            </div>
+                            <div class="clear"></div>
+                            <div class="flip-button"></div>
+                        </div>
+                    </div>
+                    <div class="back">
+                        <div class="content">
+                            <div class="ticket-number-back">
+                                <form class="ticket-form">
+                                    <div class="header">What is your ticket number?</div>
+                                    <div class="input-area">
+                                        <input type="number" name="ticket" placeholder="Your ticket number?">
+                                        <div class="submit">SUBMIT</div>
+                                    </div>
+
+                                    <div class="flip-button"></div>
+                                </form>
+
+                                <div id="ticket-number-invalid" class="hidden">
+                                    <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid ticket number. Please enter the number that is printed on your ticket.
+                                </div>
+
+                                <hr class="loader">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="service-number">
             <div class="cardholder">
                 <div class="card flipped">
@@ -196,45 +235,6 @@
 
                                 <div id="service-number-invalid" class="hidden">
                                     <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid service number. Please enter the number that is currently displayed on the monitor.
-                                </div>
-
-                                <hr class="loader">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="ticket-number">
-            <div class="cardholder">
-                <div class="card flipped">
-                    <div class="front">
-                        <div class="content">
-                            <div class="ticket-number-front">
-                                <img class="icon" src="images/your-ticket.png" />
-                                <div class="title">Your ticket number</div>
-                                <div class="number"></div>
-                            </div>
-                            <div class="clear"></div>
-                            <div class="flip-button"></div>
-                        </div>
-                    </div>
-                    <div class="back">
-                        <div class="content">
-                            <div class="ticket-number-back">
-                                <form class="ticket-form">
-                                    <div class="header">What is your ticket number?</div>
-                                    <div class="input-area">
-                                        <input type="number" name="ticket" placeholder="Your ticket number?">
-                                        <div class="submit">SUBMIT</div>
-                                    </div>
-
-                                    <div class="flip-button"></div>
-                                </form>
-
-                                <div id="ticket-number-invalid" class="hidden">
-                                    <span class="glyphicon glyphicon-thumbs-down"></span> <strong>Opps!</strong> Invalid ticket number. Please enter the number that is printed on your ticket.
                                 </div>
 
                                 <hr class="loader">

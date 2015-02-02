@@ -98,10 +98,14 @@ Util.scrollToElement = function(element) {
         scrollTo = $(element);
     }
 
+    var isiPad = navigator.userAgent.match(/iPad/i) != null;
+
     var offset = scrollTo.offset().top - $('.container').offset().top;
-    body.animate({
-        scrollTop: offset - 7 // Allow for 7px margin.
-    }, 400);
+    setTimeout(function() {
+        body.animate({
+            scrollTop: offset - 7 - $('.navbar').height() // Allow for 7px margin.
+        }, isiPad ? 0 : 400); // Can cause navbar to flicker on iPad, so just disable.
+    }, 700); // Add timeout to smooth out scroll animation.
 };
 
 /**

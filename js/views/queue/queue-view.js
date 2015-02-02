@@ -68,10 +68,12 @@ app.QueueView = Backbone.View.extend({
     sizeCards: function() {
         var ticketCard = this.$ticketNumberCard;
         var height = $('.ticket-number-back', ticketCard).height();
+        ticketCard.height(height);
         $('.front, .content', ticketCard).height(height);
 
         var serviceCard = this.$serviceNumberCard;
         height = $('.service-number-back', serviceCard).height();
+        serviceCard.height(height);
         if(height) {
             serviceCard.height(height);
             $('.front, .content', serviceCard).height(height);
