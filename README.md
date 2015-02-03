@@ -8,10 +8,7 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
-* Horizonally centre elements.
-* Minimise width of cards.
-
-* Minify HTML.
+* Minify HTML. (add last build time and update timestamp cache strings)
 
 * Introduce grunt-responsive-images (https://github.com/andismith/grunt-responsive-images).
 

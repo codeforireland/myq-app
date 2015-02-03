@@ -60,8 +60,6 @@
     .inner-content {
         position: relative;
 
-        margin: auto;
-
         .details {
             position: absolute;
             left: 0;
@@ -135,6 +133,7 @@
         .wait-time {
             display: none;
             padding: 10px;
+            min-width: 310px;
 
             background-color: $card-color;
 
@@ -214,6 +213,11 @@
 
         .wait-time, .service-number {
             display: none;
+        }
+
+        .ticket-number, .service-number {
+            max-width: 500px;
+            padding: 0;
         }
 
         .ticket-number-front, .service-number-front {
