@@ -14,6 +14,7 @@ Latest changes deployed to http://dev.myq.ie
 
 * Auto-update service time.
 
+* Investigate https://github.com/addyosmani/grunt-uncss
 
 TODO
 ====
