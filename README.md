@@ -6,7 +6,7 @@ This application provides an estimate of queuing times for face-to-face services
 DOING
 =====
 
-Latest changes deployed to http://dev.myq.ie
+Latest changes deployed to http://dev.myq.ie and http://myq.ie
 
 * Generate version number and copyright into files. Also, display within app.
 
