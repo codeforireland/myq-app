@@ -14,10 +14,6 @@ Latest changes deployed to http://dev.myq.ie
 
 * Update icons.
 
-* Check-in with comments. Review all code...
-
-* Deploy to production.
-
 TODO
 ====
 
