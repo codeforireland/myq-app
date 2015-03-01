@@ -6,14 +6,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>My Q</title>
 
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
 
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" type="text/css" rel="stylesheet">
 
-        <link href="lib/bootstrap-notify/bootstrap-notify.min.css?1405892731158" type="text/css" rel="stylesheet">
-        <link href="lib/bootstrap-notify/alert-bangtidy.min.css?1405892731158" type="text/css" rel="stylesheet">
+        <link href-NO-CACHE-BUSTING="lib/animate.css/3.1.1/animate.min.css" type="text/css" rel="stylesheet">
 
-        <link href="deploy/app.css?1405892731158" type="text/css" rel="stylesheet">
+        <link href="app.min.css" type="text/css" rel="stylesheet">
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -29,7 +28,6 @@
         <div class="device-md visible-md"></div>
         <div class="device-lg visible-lg"></div>
 
-        <div class="notifications top-left"></div>
 
         <div class="mask">
         </div>
@@ -43,32 +41,35 @@
             <span class="glyphicon glyphicon-warning-sign"></span> <strong>Warning!</strong> No service available at the moment. Try again later.
         </div>
 
+        <!-- CDN included libraries -->
         <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>
-
+        <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
         <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
-        <script src="//underscorejs.org/underscore-min.js?1405892731158"></script>
-        <script src="//backbonejs.org/backbone-min.js?1405892731158"></script>
+        <!-- Local Bower included libraries -->
+        <script src-NO-CACHE-BUSTING="lib/bootstrap.growl/2.0.0/bootstrap-growl.min.js"></script>
+        <script src-NO-CACHE-BUSTING="lib/bootstrap-maxlength/1.5.7/bootstrap-maxlength.min.js"></script>
+        <script src-NO-CACHE-BUSTING="lib/jquery-autosize/1.18.17/jquery.autosize.min.js"></script>
+        <script src-NO-CACHE-BUSTING="lib/mustache.js/1.0.0/mustache.min.js"></script>
 
-        <script src="lib/autosize/jquery.autosize.min.js?1405892731158"></script>
-        <script src="lib/bootstrap-maxlength/bootstrap-maxlength.min.js?1405892731158"></script>
-        <script src="lib/bootstrap-notify/bootstrap-notify.min.js?1405892731158"></script>
-        <script src="lib/countdown.js/countdown.min.js?1405892731158"></script>
-        <script src="lib/jquery.mustache/jquery.mustache.min.js?1405892731158"></script>
-        <script src="lib/mustache/mustache.min.js?1405892731158"></script>
+        <!-- Local included libraries -->
+        <script src-NO-CACHE-BUSTING="lib/countdown.js/2.5.2/countdown.min.js"></script>
+        <script src-NO-CACHE-BUSTING="lib/jquery.mustache/0.2.8/jquery.mustache.min.js"></script>
 
-        <script src="deploy/app.min.js?1405892731158"></script>
-        <!-- // <script src="build/app.js?1405892731158"></script> -->
+        <script src="app.min.js"></script>
 
-        <!-- <script>
-          (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        <!--PRODUCTION-CODE
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-          ga('create', 'UA-51639325-1', 'myq.ie');
-          ga('send', 'pageview');
+              ga('create', 'UA-51639325-1', 'myq.ie');
+              ga('send', 'pageview');
 
-        </script> -->
+            </script>
+        -->
     </body>
 </html>

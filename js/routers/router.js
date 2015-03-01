@@ -14,10 +14,14 @@ app.AppRouter = Backbone.Router.extend({
         window.scrollTo(0, 0);
 
         if(this.view) {
+            this.view.unbind();
             this.view.remove();
+            delete this.view;
         }
 
         this.view = view;
+
+        app.appView.$content.empty();
         app.appView.$content.append(view.el);
     },
 
@@ -36,8 +40,8 @@ app.AppRouter = Backbone.Router.extend({
             this.queueCollection = new app.QueueCollection();
             this.queueCollection.fetch({
                 success: _.bind(function(queueCollection) {
-                            this.displayQueue(queueCollection, queueId);
-                         }, this)
+                        this.displayQueue(queueCollection, queueId);
+                    }, this)
             });
         }
     },

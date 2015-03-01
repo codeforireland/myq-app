@@ -4,17 +4,17 @@ app.QueueView = Backbone.View.extend({
 
     template: 'queue-view-tpl',
 
-    COUNTDOWN_LIMIT_ALERT: 60 * 5, // 5 minutes
+    COUNTDOWN_LIMIT_ALERT: 5 * 60 * 1000, // 5 minutes
 
     MAX_WAIT_TIME: 60 * 60 * 24, // 1 day
 
-    DEBUG_TIME: (1000 * 100), // 100 seconds
+    DEBUG_TIME: 1000 * 100, // 100 seconds
 
     MIN_ANIMATION_TIME: 300,
 
     ALERT_DISPLAY_TIME: 5000,
 
-    timers: [],
+    REFRESH_TIME: 1000 * 120, // Refresh stats every 2 minutes from server.
 
     events: {
         'click .header .status span': 'toggleDetails',
@@ -35,7 +35,17 @@ app.QueueView = Backbone.View.extend({
         // Initialise and display back button
         var backArrow = $('.navbar-brand.back-button');
         backArrow.removeClass('hidden');
+
         var self = this;
+        backArrow.on('click', function() {
+            history.back();
+        });
+
+        window.onpopstate = function() {
+            clearInterval(self.countdownTimer);
+            clearInterval(self.refreshTimer);
+            backArrow.off();
+        };
 
         // Update NavBar with current queue name.
         if(Util.isMobile()) {
@@ -43,14 +53,6 @@ app.QueueView = Backbone.View.extend({
         } else {
             $('.navbar-brand.title').html(this.model.get('address').name);
         }
-
-        backArrow.off().on('click', function() {
-            _.each(self.timers, function(item) {
-                clearInterval(item);
-            });
-            self.timers = [];
-            history.back();
-        });
 
         // Render view.
         this.render();
@@ -66,15 +68,16 @@ app.QueueView = Backbone.View.extend({
     },
 
     sizeCards: function() {
-        var ticketCard = this.$ticketNumberCard;
-        var height = $('.ticket-number-back', ticketCard).height();
-        ticketCard.height(height);
-        $('.front, .content', ticketCard).height(height);
+        var ticketCard = this.$ticketNumberCard, height;
+        if(ticketCard) {
+            height = $('.ticket-number-back', ticketCard).height();
+            ticketCard.height(height);
+            $('.front, .content', ticketCard).height(height);
+        }
 
         var serviceCard = this.$serviceNumberCard;
-        height = $('.service-number-back', serviceCard).height();
-        serviceCard.height(height);
-        if(height) {
+        if(serviceCard) {
+            height = $('.service-number-back', serviceCard).height();
             serviceCard.height(height);
             $('.front, .content', serviceCard).height(height);
         }
@@ -84,15 +87,21 @@ app.QueueView = Backbone.View.extend({
         this.$el.mustache(this.template, this.adaptModelForView(this.model.toJSON()));
 
         // Remove any old notification messages.
-        $('.notifications .alert').remove();
+        $.growl(false, { command: 'closeAll' });
+
+        var queue = this.model.get('queueInfo').queueId;
+        Util.responsiveBGImage(queue);
 
         if(!this.model.get('isOpen')) {
             this.$('.status span').css('visibility', 'hidden');
-            this.$('.inner-content .details').show();
+            this.$('.details').show();
+            this.$('.inner-content .wait-time').hide();
+            this.$('.inner-content .notification.estimated').hide();
+            this.$('.inner-content .ticket-number').hide();
+            this.$('.inner-content .service-number').hide();
             return;
         }
 
-        var queue = this.model.get('queueInfo').queueId;
         var ticket = this.model.get('ticket');
 
         // Cache elements
@@ -243,7 +252,13 @@ app.QueueView = Backbone.View.extend({
 
     toggleDetails: function() {
         this.$('.header .status span').toggleClass('rotate');
-        this.$('.inner-content .details').slideToggle();
+        var isOpen = this.$('.details').slideToggle().toggleClass('opened').is('.opened');
+
+        if (isOpen) {
+            $('.inner-content').fadeTo(400, 0);
+        } else {
+            $('.inner-content').fadeTo(400, 1);
+        }
     },
 
     flipCard: function(eventOrCard) {
@@ -259,6 +274,9 @@ app.QueueView = Backbone.View.extend({
         // DEBUG TBR
         //waitTime = $.now() + this.DEBUG_TIME;
 
+        var waitTimeEl = $('.wait-time');
+        waitTimeEl.addClass('animated lightSpeedIn');
+
         waitTime = new Date(waitTime);
 
         var hours = waitTime.getHours();
@@ -272,20 +290,23 @@ app.QueueView = Backbone.View.extend({
         };
 
         if(typeof startClock !== 'undefined' && startClock) {
-            clearInterval(this.timerId);
-            this.timers = _.without(this.timers, this.timerId);
+            clearInterval(this.countdownTimer);
             var self = this;
-            this.timerId = countdown(function(ts) {
+            this.countdownTimer = countdown(function(ts) {
                 if(ts.value <= 0) {
-                    clearInterval(self.timerId);
-                    self.timers = _.without(self.timers, self.timerId);
+                    clearInterval(self.countdownTimer);
                     ts.seconds = 0; // Required as sometimes a single second can be left over.
+                }
+
+                if(ts.value < self.COUNTDOWN_LIMIT_ALERT) {
+                    waitTimeEl.addClass('time-warning');
+                } else {
+                    waitTimeEl.removeClass('time-warning');
                 }
 
                 tick(ts.hours, ts.minutes, ts.seconds);
 
             }, waitTime, countdown.HOURS|countdown.MINUTES|countdown.SECONDS);
-            this.timers.push(this.timerId);
         } else {
             tick(hours, minutes, seconds);
         }
@@ -296,7 +317,7 @@ app.QueueView = Backbone.View.extend({
     ticketChanged: function(ticket, notify) {
         this.$ticketNumberCardHolder.addClass('form-mask');
 
-        var loadTimer = Util.startProgressLoader(this.$ticketNumber);
+        var progressTimer = Util.startProgressLoader(this.$ticketNumber);
 
         $('.number', this.$ticketNumberDisplay).html(ticket);
         this.$ticketInput.val(ticket);
@@ -306,7 +327,8 @@ app.QueueView = Backbone.View.extend({
         // Get new wait time based on submitted ticket number.
         $.ajax({
             url: app.queuesUrl + queue + '/tickets/' + ticket,
-            context: this
+            //url: 'ticket.json' + '?v=' + $.now(),
+            context: this,
         }).done(function(response) {
             var self = this;
             setTimeout(function() {
@@ -322,11 +344,13 @@ app.QueueView = Backbone.View.extend({
 
                         self.sizeCards();
 
-                        if(!self.$serviceNumberCard.hasClass('flipped')) {
-                           self.flipCard(self.$serviceNumberCard);
-                        }
+                        if(notify) {
+                            if(!self.$serviceNumberCard.hasClass('flipped')) {
+                               self.flipCard(self.$serviceNumberCard);
+                            }
 
-                        Util.scrollToElement(self.$serviceNumber);
+                            Util.scrollToElement(self.$serviceNumber);
+                        }
                     };
 
                     if(notify) {
@@ -336,6 +360,13 @@ app.QueueView = Backbone.View.extend({
                     }
 
                     self.$waitTime.slideDown();
+
+                    // Start auto-refresh timer to update wait time from server.
+                    clearInterval(self.refreshTimer);
+                    self.refreshTimer = setInterval(function() {
+                        $('.wait-time').removeClass('animated lightSpeedIn');
+                        self.refreshWaitTime(queue, ticket);
+                    }, self.REFRESH_TIME);
                 } else {
                     Util.notify('#wait-time-unavailable', 'warning');
                 }
@@ -344,7 +375,7 @@ app.QueueView = Backbone.View.extend({
             var self = this;
             setTimeout(function() {
                 self.$ticketNumberCardHolder.removeClass('form-mask');
-                Util.stopProgressLoader(self.$ticketNumber, loadTimer);
+                Util.stopProgressLoader(self.$ticketNumber, progressTimer);
                 self.flipIfNotFocused(self.$ticketInput, self.$ticketNumberCard);
                 Util.scrollToElement(self.$waitTime);
                 $('.ticket-number-back .flip-button', self.$ticketNumber).fadeIn();
@@ -355,14 +386,13 @@ app.QueueView = Backbone.View.extend({
     ticketSubmit: function(event) {
         event.stopPropagation();
 
-        // Remove any old notification messages.
-        $('.notifications .alert').remove();
-
         if(!this.model.set('ticket', this.$ticketInput.val(), {validate: true})) {
             Util.notify(this.model.validationError, 'warning');
-            //this.flipIfNotFocused(this.$ticketInput, this.$ticketNumberCard);
         } else {
             this.ticketChanged(this.$ticketInput.val(), true);
+            setTimeout(function() {
+                $('.wait-time').removeClass('animated lightSpeedIn');
+            }, 1000);
         }
     },
 
@@ -377,7 +407,7 @@ app.QueueView = Backbone.View.extend({
     serviceNumberChanged: function(servicedTicketNumber) {
         this.$serviceNumberCardHolder.addClass('form-mask');
 
-        var loadTimer = Util.startProgressLoader(this.$serviceNumber);
+        var progressTimer = Util.startProgressLoader(this.$serviceNumber);
 
         // If no ticket set, just set it to the updated servicedTicketNumber.
         var ticket = this.model.get('ticket');
@@ -406,7 +436,7 @@ app.QueueView = Backbone.View.extend({
             },
             complete: function() {
                 setTimeout(function() {
-                    Util.stopProgressLoader(self.$serviceNumber, loadTimer);
+                    Util.stopProgressLoader(self.$serviceNumber, progressTimer);
                     self.$serviceNumberCardHolder.removeClass('form-mask');
                     self.flipIfNotFocused(self.$serviceInput, self.$serviceNumberCard);
                     Util.scrollToElement(self.$waitTime);
@@ -418,14 +448,13 @@ app.QueueView = Backbone.View.extend({
     serviceSubmit: function(event) {
         event.stopPropagation();
 
-        // Remove any old notification messages.
-        $('.notifications .alert').remove();
-
         if(!this.model.set('servicedTicketNumber', this.$serviceInput.val(), {validate: true})) {
             Util.notify(this.model.validationError, 'warning');
-            //this.flipIfNotFocused(this.$serviceInput, this.$serviceNumberCard);
         } else {
             this.serviceNumberChanged(this.$serviceInput.val());
+            setTimeout(function() {
+                $('.wait-time').removeClass('animated lightSpeedIn');
+            }, 1000);
         }
     },
 
@@ -441,5 +470,16 @@ app.QueueView = Backbone.View.extend({
         if(!input.is(':focus')) {
             this.flipCard(card);
         }
+    },
+
+    refreshWaitTime: function(queue, ticket) {
+        // Get new wait time based on submitted ticket number.
+        $.ajax({
+            url: app.queuesUrl + queue + '/tickets/' + ticket,
+            //url: 'ticket.json' + '?v=' + $.now(),
+            context: this
+        }).done(function(response) {
+            this.displayWaitTime(response.waitingTime, true);
+        });
     }
 });

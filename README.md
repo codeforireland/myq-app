@@ -8,13 +8,15 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie
 
-* Minify HTML. (add last build time and update timestamp cache strings)
+* Generate version number and copyright into files. Also, display within app.
 
-* Introduce grunt-responsive-images (https://github.com/andismith/grunt-responsive-images).
+* Add social network links.
 
-* Auto-update service time.
+* Update icons.
 
-* Investigate https://github.com/addyosmani/grunt-uncss
+* Check-in with comments. Review all code...
+
+* Deploy to production.
 
 TODO
 ====
@@ -23,17 +25,31 @@ TODO
 
 * Split queue.html into individual template files (one per view)
 
-* Add Bower support.
-
 * Move from mustache.js to underscore.js
 
 * Investigate live editing of markup via Chrome.
+
+* Re-write href-NO-CACHE-BUSTING as solution is overly complex and non-standard.
+
 
 Building
 ========
 
 * Install Ruby (https://www.ruby-lang.org/en/downloads/)
 * Install Compass (http://compass-style.org/install/)
-* Install Grunt (http://gruntjs.com/getting-started)
+* Install Gulp (http://gulpjs.com/)
 
-* To compile JS/SASS run "Grunt" from root folder.
+* To compile JS/SASS run "gulp" from root folder.
+
+Dependencies
+============
+
+GraphicsMagick
+http://www.graphicsmagick.org/
+http://sourceforge.net/projects/graphicsmagick/files/graphicsmagick-binaries/1.3.20/GraphicsMagick-1.3.20-Q8-win64-dll.exe/download
+
+ImageMagick
+http://www.imagemagick.org/script/binary-releases.php
+ImageMagick-6.9.0-5-Q8-x64-static.exe
+
+New queue images should be supplied at a minimum width of 1200px.

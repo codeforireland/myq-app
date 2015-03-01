@@ -4,16 +4,28 @@
     .myq-cover {
         padding: 80px 0;
 
-        background-image: url('../images/myq-cover.jpg');
+        @include responsive-bg-image('myq-cover');
+
         background-position: center;
         background-repeat: no-repeat;
         @include background-size(cover);
 
         color: $font-color;
 
-        font-family: 'Open Sans', sans-serif;
+        font-family: 'Roboto', sans-serif;
         font-size: 56px;
-        text-align: center;
+
+        .logo {
+            text-align: center;
+            margin-left: -56px;
+
+            img {
+                position: absolute;
+
+                height: 50px;
+                margin-top: 16px;
+            }
+        }
     }
 
     .pick-a-queue {

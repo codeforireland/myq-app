@@ -6,4 +6,10 @@ $.Mustache.load('./templates/queue.html').done(function () {
 
     // Now, start listening to route changes.
     app.appRouter = new app.AppRouter();
+
 });
+
+
+
+
+

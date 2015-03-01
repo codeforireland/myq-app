@@ -5,3 +5,4 @@ css/app.css.map
 node_modules/
 build/
 deploy/
+dist/

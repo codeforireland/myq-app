@@ -10,9 +10,6 @@ app.QueueListView = Backbone.View.extend({
         // Hide back button
         var backArrow = $('.navbar-brand.back-button');
         backArrow.addClass('hidden');
-        backArrow.on('click', function() {
-            history.back();
-        });
 
         this.listenTo(this.collection, 'reset', this.render);
         if(!this.collection.length) {
@@ -22,11 +19,13 @@ app.QueueListView = Backbone.View.extend({
         } else {
             this.render();
         }
+
+        Util.removeStyleSheet();
     },
 
     render: function () {
         // Remove any old notification messages.
-        $('.notifications .alert').remove();
+        $.growl(false, { command: 'closeAll' });
 
         this.$el.mustache(this.template);
 

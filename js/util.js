@@ -3,34 +3,43 @@ function Util () {} // TODO Convert to backbone.js class
 /**
  * Display a message to the user that will fade out or they can dismiss.
  *
- * Based on Bootstrap Notify
- * https://github.com/jclay/bootstrap-notify-gem
+ * Based on Bootstrap Growl
+ * http://bootstrap-growl.remabledesigns.com/
  *
  */
 Util.notify = function(selector, type, callback) {
     type = typeof type !== 'undefined' ? type : 'success';
 
     // Only allow one instance of the same message to be displayed
-    // at a time.
+    // at a time, otherwise, just wobble the already displayed message.
     var messageText = $(selector).text().trim();
-    var existingMessage = $('.top-left').text().replace('×', '').trim();
-    if(messageText === existingMessage) {
-        $('.top-left').empty();
+    var alerts = $('.alert');
+    var addAnimatedWobble = function() { alert.addClass('animated wobble'); };
+    for(var i = 0, len = alerts.length; i < len; i++) {
+        alert = $(alerts[i]);
+        var existingMessage = alert.text().replace('×Close', '').trim();
+        var index = existingMessage.indexOf(messageText);
+        if(index !== -1) {
+            alert.removeClass('fadeInDown animated wobble');
+            setTimeout(addAnimatedWobble);
+
+            return;
+        }
     }
 
-    // TODO use id instead based on passed in selector - maybe a data attribute.
+    $.growl({
+            message: $(selector).html(),
+        }, {
+            type: type,
+            placement: {
+                from: 'top',
+                align: 'center'
+            },
+            offset: 20,
 
-    $('.top-left').notify({
-        message: {
-            html: $(selector).html()
-        },
-        type: type,
-        fadeOut: {
-            enabled: true,
-            delay: 10000
-        },
-        onClosed: callback
-    }).show();
+            delay: 10000,
+            onHide: callback
+        });
 };
 
 Util.showFormMask = function(form, goButton) {
@@ -95,7 +104,7 @@ Util.scrollToElement = function(element) {
     if(!(element instanceof jQuery)) {
         scrollTo = $(element.href.substr(element.href.indexOf('#')));
     } else {
-        scrollTo = $(element);
+        scrollTo = element;
     }
 
     var isiPad = navigator.userAgent.match(/iPad/i) !== null;
@@ -154,3 +163,67 @@ Util.stopProgressLoader = function(element, loadTimer) {
     clearInterval(loadTimer);
     $('.loader', element).width(0);
 };
+
+/**
+ * Inject style sheet to support dynamic responsive
+ * background image.
+ */
+Util.responsiveBGImage = function(image, ext) {
+    ext = ext || 'jpg';
+
+    var sheet;
+    for(var i = 0, len = document.styleSheets.length; i<len; i++) {
+        if(document.styleSheets[i].title === 'myq-app') {
+            sheet = document.styleSheets[i];
+            break;
+        }
+    }
+
+    if(sheet) {
+        sheet.ownerNode.remove();
+    }
+
+    var style = document.createElement('style');
+
+    style.setAttribute('title', 'myq-app');
+
+    // WebKit hack :(
+    style.appendChild(document.createTextNode(''));
+
+    // Add the <style> element to the page
+    document.head.appendChild(style);
+
+    sheet = style.sheet;
+
+    var classSelector = '.myq-cover .content';
+
+    /* Large devices (large desktops, 1200px [@screen-lg-min] and up) */
+    sheet.insertRule('@media screen and (min-width : 1200px) { ' + classSelector + ' { background-image: url("images/' + image + '.' + ext + '") !important; } }', 0);
+
+    /* Medium devices (desktops, 992px [@screen-md-min] and up) */
+    sheet.insertRule('@media screen and (min-width : 992px) { ' + classSelector + ' { background-image: url("images/' + image + '-1200.' + ext + '") !important; } }', 0);
+
+    /* Small devices (tablets, 768px [@screen-sm-min] and up) */
+    sheet.insertRule('@media screen and (min-width : 768px) { ' + classSelector + ' { background-image: url("images/' + image + '-992.' + ext + '") !important; } }', 0);
+
+    sheet.insertRule(classSelector + ' { background-image: url("images/' + image + '-768.' + ext + '") !important;', 0);
+};
+
+Util.removeStyleSheet = function() {
+    var sheet;
+    for(var i = 0, len = document.styleSheets.length; i<len; i++) {
+        if(document.styleSheets[i].title === 'myq-app') {
+            sheet = document.styleSheets[i];
+            break;
+        }
+    }
+
+    if(sheet) {
+        sheet.ownerNode.remove();
+    }
+
+    var body = $('body')[0];
+    var viewportHeight = body.scrollHeight;
+
+};
+

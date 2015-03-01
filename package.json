@@ -1,12 +1,26 @@
 {
-    "name": "myq-app",
-    "version": "0.0.1",
-    "devDependencies": {
-       "grunt": "~0.4.5",
-       "grunt-contrib-compass": "~1.0.1",
-       "grunt-contrib-jshint":  "~0.11.0",
-       "grunt-contrib-concat":  "~0.5.0",
-       "grunt-contrib-uglify":  "~0.7.0",
-       "grunt-contrib-watch":   "~0.6.1"
-    }
+  "name": "myq-app",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/codeforireland/myq-app.git"
+  },
+  "devDependencies": {
+    "del": "^1.1.1",
+    "gulp": "^3.8.10",
+    "gulp-compass": "^2.0.3",
+    "gulp-concat": "^2.4.3",
+    "gulp-copy": "0.0.2",
+    "gulp-htmlmin": "^1.0.0",
+    "gulp-if": "^1.2.5",
+    "gulp-jshint": "^1.9.2",
+    "gulp-livereload": "^3.7.0",
+    "gulp-notify": "^2.2.0",
+    "gulp-rename": "^1.2.0",
+    "gulp-replace": "^0.5.3",
+    "gulp-rev-mtime": "0.0.4",
+    "gulp-rwi": "^1.0.4",
+    "gulp-uglify": "^1.1.0"
+  },
+  "dependencies": {}
 }

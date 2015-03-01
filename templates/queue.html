@@ -67,7 +67,11 @@
 
 <script id="queue-list-view-tpl" type="x-tmpl-mustache">
 
-	<div class="myq-cover">MY Q</div>
+	<div class="myq-cover">
+        <div class="logo">
+            MY<img src="images/q-logo.png" />
+        </div>
+    </div>
 	<div class="pick-a-queue">
         <span>Pick a queue</span>
     </div>
@@ -96,49 +100,53 @@
 <script id="queue-view-tpl" type="x-tmpl-mustache">
 
     <div class="header">
-        <div class="myq-cover" style="background-image: url('images/{{queueInfo.queueId}}_md@2x.png');">
-            <span class="title">{{address.name}}</span>
-            <hr>
-            <div class="status">
-                {{#isOpen}}OPEN{{/isOpen}}
-                {{^isOpen}}CLOSED{{/isOpen}}
-                <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="myq-cover">
+            <div class="content">
+                <div class="title-holder">
+                <span class="title">{{address.name}}</span>
+                <hr>
+                <div class="status">
+                    {{#isOpen}}OPEN{{/isOpen}}
+                    {{^isOpen}}CLOSED{{/isOpen}}
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="details col-sm-8 center-block">
+        <div class="details-holder">
+            <div class="description">
+                {{description}}
+            </div>
+            <div class="address">
+                <div class="title">Address & Contact</div>
+                <div><a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}}, {{address.addressLine1}}, {{address.county}})?z=17">{{address.addressLine1}}, {{address.county}}</a></div>
+                <div><a href="tel:{{contactDetails.formattedTelephoneNumber}}">{{contactDetails.displayTelephoneNumber}}</a></div>
+                <div><a href="mailto:{{contactDetails.email}}" target="_top">{{contactDetails.email}}</a></div>
+            </div>
+            <div class="googleMap">
+                <img src="" />
+                <div class="overlay">
+                    <a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}},{{address.addressLine1}},{{address.townOrCity}},{{address.postcode}})?z=17">{{address.name}}</a>
+                    <div>{{address.addressLine1}},</div>
+                    <div>{{address.townOrCity}}</div>
+                    <div>{{address.postcode}}</div>
+                </div>
+            </div>
+            <div class="hours">
+                <div class="title">Opening Hours</div>
+                <table>
+                    {{#openingHours}}
+                    <tr><td>{{day}}</td><td class="time">{{openingHour}}:{{openingMinute}} - {{closingHour}}:{{closingMinute}}</td></tr>
+                    {{/openingHours}}
+                </table>
             </div>
         </div>
     </div>
 
     <div class="inner-content">
-        <div class="details">
-            <div class="details-holder">
-                <div class="description">
-                    {{description}}
-                </div>
-                <div class="address">
-                    <div class="title">Address & Contact</div>
-                    <div><a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}}, {{address.addressLine1}}, {{address.county}})?z=17">{{address.addressLine1}}, {{address.county}}</a></div>
-                    <div><a href="tel:{{contactDetails.formattedTelephoneNumber}}">{{contactDetails.displayTelephoneNumber}}</a></div>
-                    <div><a href="mailto:{{contactDetails.email}}" target="_top">{{contactDetails.email}}</a></div>
-                </div>
-                <div class="googleMap">
-                    <img src="" />
-                    <div class="overlay">
-                        <a href="geo:0,0?q={{location.latitude}},{{location.longitude}}({{address.name}},{{address.addressLine1}},{{address.townOrCity}},{{address.postcode}})?z=17">{{address.name}}</a>
-                        <div>{{address.addressLine1}},</div>
-                        <div>{{address.townOrCity}}</div>
-                        <div>{{address.postcode}}</div>
-                    </div>
-                </div>
-                <div class="hours">
-                    <div class="title">Opening Hours</div>
-                    <table>
-                        {{#openingHours}}
-                        <tr><td>{{day}}</td><td class="time">{{openingHour}}:{{openingMinute}} - {{closingHour}}:{{closingMinute}}</td></tr>
-                        {{/openingHours}}
-                    </table>
-                </div>
-            </div>
-        </div>
-
         <div class="wait-time">
 
             <div class="estimated">
@@ -160,7 +168,7 @@
 
         <div class="notification estimated">
             <div class="dismiss">×</div>
-            <div class="up-arrow" />
+            <div class="up-arrow"></div>
             <div class="text">
                 Thank you! Estimated waiting time has been updated based on information you provided.
             </div>
@@ -255,7 +263,7 @@
     </div>
 
     <div id="wait-time-unavailable" class="hidden">
-        <span class="glyphicon glyphicon-ban-circle"></span> <strong>Sorry!</strong> Your wait time cannot be determined. Most probably, this is because the office is closed, an unexpected ticket or service number was entered at this time, or you've already been served.
+        <span class="glyphicon glyphicon-ban-circle"></span> <strong>Sorry!</strong> Your wait time cannot be determined. Most probably, this is because an unexpected ticket or service number was entered at this time, or you&apos;ve already been served.
     </div>
 
     <div id="ticket-number-update" class="hidden">

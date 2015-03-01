@@ -16,14 +16,15 @@ $background-color: #DFDFDF;
 
 $font-color: rgba(0, 0, 0, 0.54);
 $muted-font-color: rgba(0, 0, 0, 0.34);
+$header-font-color: white;
 
-$navbar-color: rgb(255, 255, 255); /* Must use rgb format as opacity is changed in JavaScript. */
+$navbar-color: rgba(255, 255, 255, 0.95);
 $navbar-border-color: #DCDCDC;
 
 $list-color: #F5F5F5;
 $list-separator-color: #DCDCDC;
 
-$card-color: white;
+$card-color: rgb(255, 255, 255);
 $card-shadow-color: 0 1px 2px rgba(0, 0, 0, 0.2);
 $card-raised-shadow-color: 0 5px 2px rgba(0, 0, 0, 0.2);
 
@@ -33,6 +34,7 @@ $input-border-color: rgba(50, 170, 174, 0.6);
 $button-color: #32AAAE;
 $button-font-color: white;
 
+$time-warning: red;
 $error-color: red;
 
 $notification-color: #C6D67E;
@@ -40,3 +42,22 @@ $notification-color: #C6D67E;
 $picker-color: rgba(0, 0, 0, 0.4);
 $picker-arrow-color: rgba(0,0,0,0.35);
 $picker-font-color: white;
+
+@mixin responsive-bg-image($image, $ext: jpg) {
+    background-image: url('images/#{$image}-768.#{$ext}');
+
+    /* Small devices (tablets, 768px [@screen-sm-min] and up) */
+    @media screen and (min-width: 768px) {
+        background-image: url('images/#{$image}-992.#{$ext}');
+    }
+
+    /* Medium devices (desktops, 992px [@screen-md-min] and up) */
+    @media screen and (min-width: 992px) {
+        background-image: url('images/#{$image}-1200.#{$ext}');
+    }
+
+    /* Large devices (large desktops, 1200px [@screen-lg-min] and up) */
+    @media screen and (min-width: 1200px) {
+        background-image: url('images/#{$image}.#{$ext}');
+    }
+}

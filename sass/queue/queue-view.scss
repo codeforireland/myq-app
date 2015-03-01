@@ -5,53 +5,133 @@
         position: relative;
 
         .myq-cover {
-            position: relative;
+            .content {
+                background-image: url('images/myq-cover.jpg');
+                background-position: center;
+                @include background-size(cover);
+                color: $header-font-color;
+                padding: 20px 0;
+                padding-top: 200px;
 
-            padding: 80px 20px 1px 20px;
+                .title-holder {
+                    background-color: rgba(0,0,0, 0.2);
+                    border-radius: 4px;
+                    padding: 10px;
+                }
 
-            background-image: url('../images/myq-cover.png');
-            background-position: center;
-            background-repeat: no-repeat;
-            @include background-size(cover);
+                .title {
+                    font-size: $title-font-size;
+                }
+
+                hr {
+                    margin: 0;
+
+                    border-color: rgba($header-font-color, 0.8);
+                }
+
+                .status {
+                    padding-top: 10px;
+
+                    span {
+                        float: right;
+
+                        font-size: $title-font-size;
+
+                        cursor: pointer;
+
+                        @include transition-duration(500ms);
+
+                        &.rotate {
+                            @include transform(rotate(360deg));
+                        }
+
+                        &.glyphicon {
+                            top: 2px;
+                        }
+
+                        &:after { /* Increase clickable area. */
+                            position: absolute;
+                            right: -10px;
+                            top: -10px;
+
+                            width: 60px;
+                            height: 40px;
+
+                            content: '';
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .details {
+        position: absolute;
+        left: 0;
+        right: 0;
+        z-index: 3;
+
+        padding: 7px;
+
+        display: none;
+        background-color: $background-color;
+
+        .details-holder {
+            padding: 20px;
+
+            @include border-radius(3px);
+
+            background-color: $card-color;
+            @include box-shadow($card-shadow-color);
+
+            .description {
+                margin-bottom: 15px;
+            }
+
+            a {
+                color: $button-color;
+            }
 
             .title {
+                padding-bottom: 5px;
+
                 font-size: $title-font-size;
             }
 
-            hr {
-                margin: 0;
-
-                border-color: rgba($font-color, 0.2);
+            .address {
+                margin-bottom: 20px;
             }
 
-            .status {
-                padding: 5px 0;
+            .googleMap img {
+                max-width: 640px;
+                width: 100%;
+            }
 
-                span {
-                    float: right;
+            .googleMap .overlay {
+                position: absolute;
+                top: 50%;
+                left: 50%;
 
-                    color: $button-color;
+                margin: auto auto;
+                padding: 5px;
 
-                    font-size: $title-font-size;
+                @include border-radius(3px);
 
-                    cursor: pointer;
+                background-color: $card-color;
+                @include box-shadow($card-raised-shadow-color);
+                color: $font-color;
 
-                    @include transition-duration(500ms);
+                text-align: left;
+                line-height: 1.5;
 
-                    &.rotate {
-                        @include transform(rotate(360deg));
-                    }
+                opacity: 0;
+            }
 
-                    &:after { /* Increase clickable area. */
-                        position: absolute;
-                        left: -20px;
-                        top: -10px;
+            .hours {
+                margin-top: 20px;
 
-                        width: 60px;
-                        height: 40px;
-
-                        content: '';
-                    }
+                td.time {
+                    padding-left: 10px;
                 }
             }
         }
@@ -60,82 +140,16 @@
     .inner-content {
         position: relative;
 
-        .details {
-            position: absolute;
-            left: 0;
-            right: 0;
-            z-index: 3;
-
-            display: none;
-
-            .details-holder {
-                margin: 7px;
-                padding: 20px;
-
-                @include border-radius(3px);
-
-                background-color: $card-color;
-                @include box-shadow($card-shadow-color);
-
-                .description {
-                    margin-bottom: 15px;
-                }
-
-                a {
-                    color: $button-color;
-                }
-
-                .title {
-                    padding-bottom: 5px;
-
-                    font-size: $title-font-size;
-                }
-
-                .address {
-                    margin-bottom: 20px;
-                }
-
-                .googleMap img {
-                    max-width: 640px;
-                    width: 100%;
-                }
-
-                .googleMap .overlay {
-                    position: absolute;
-                    top: 50%;
-                    left: 50%;
-
-                    margin: auto auto;
-                    padding: 5px;
-
-                    @include border-radius(3px);
-
-                    background-color: $card-color;
-                    @include box-shadow($card-raised-shadow-color);
-                    color: $font-color;
-
-                    text-align: left;
-                    line-height: 1.5;
-
-                    opacity: 0;
-                }
-
-                .hours {
-                    margin-top: 20px;
-
-                    td.time {
-                        padding-left: 10px;
-                    }
-                }
-            }
-        }
-
         .wait-time {
             display: none;
             padding: 10px;
             min-width: 310px;
 
             background-color: $card-color;
+
+            &.time-warning {
+                color: $time-warning;
+            }
 
             img {
                 float: left;

@@ -6,25 +6,8 @@
     }
 }
 
-.notifications {
-    &.top-left {
-        top: 0;
-        left: 50%;
-        z-index: 1031;
-
-        .alert {
-            left: -50%;
-        }
-    }
-
-    >div {
-        margin-left: 5px;
-        margin-right: 5px;
-    }
-
-    .close.pull-right {
-        margin-left: 5px;
-    }
+.alert {
+    padding-right: 25px;
 
     /* Increase tap area */
     .close:before {
