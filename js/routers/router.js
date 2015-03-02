@@ -11,8 +11,6 @@ app.AppRouter = Backbone.Router.extend({
     },
 
     switchView : function(view) {
-        window.scrollTo(0, 0);
-
         if(this.view) {
             this.view.unbind();
             this.view.remove();
@@ -23,6 +21,8 @@ app.AppRouter = Backbone.Router.extend({
 
         app.appView.$content.empty();
         app.appView.$content.append(view.el);
+
+        window.scrollTo(0, 0);
     },
 
     visitQueues: function() {
