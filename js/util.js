@@ -221,9 +221,4 @@ Util.removeStyleSheet = function() {
     if(sheet) {
         sheet.ownerNode.remove();
     }
-
-    var body = $('body')[0];
-    var viewportHeight = body.scrollHeight;
-
 };
-

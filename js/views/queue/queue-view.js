@@ -62,6 +62,14 @@ app.QueueView = Backbone.View.extend({
         // Set card heights to be height of card backs.
         setTimeout(function() {
             self.sizeCards();
+
+            // Google Translate drop-down needs to be a child
+            // of the details view  the queue is closed.
+            if(!self.model.get('isOpen')) {
+                $('#google_translate_element').appendTo('.queue-view .details');
+            } else {
+                $('#google_translate_element').appendTo('.app-view');
+            }
         });
 
         $(window).resize($.proxy(this.sizeCards, this));
@@ -255,9 +263,9 @@ app.QueueView = Backbone.View.extend({
         var isOpen = this.$('.details').slideToggle().toggleClass('opened').is('.opened');
 
         if (isOpen) {
-            $('.inner-content').fadeTo(400, 0);
+            $('.inner-content, #google_translate_element').fadeTo(400, 0);
         } else {
-            $('.inner-content').fadeTo(400, 1);
+            $('.inner-content, #google_translate_element').fadeTo(400, 1);
         }
     },
 

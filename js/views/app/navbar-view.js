@@ -34,7 +34,8 @@ app.NavbarView = Backbone.View.extend({
         $('.navbar-toggle').addClass('collapsed');
 
         // Extract event and trigger it.
-        this.trigger(e.target.hash.substring(1));
+        var hash = e.target.hash || $(e.target).closest('a').attr('href');
+        this.trigger(hash.substring(1));
 
         // Scroll to top of page.
         window.scrollTo(0, 0);

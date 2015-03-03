@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+        <meta name="google-translate-customization" content="419d56fe5ad64f62-e28de4bd401385ff-g79b5a2360b163c84-6"></meta>
         <title>My Q</title>
 
         <link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
@@ -28,18 +29,34 @@
         <div class="device-md visible-md"></div>
         <div class="device-lg visible-lg"></div>
 
-
         <div class="mask">
         </div>
 
         <div class="app-view">
             <div class="container">
             </div>
+
+            <div id="google_translate_element"></div>
         </div>
 
         <div id="no-service" class="hidden">
             <span class="glyphicon glyphicon-warning-sign"></span> <strong>Warning!</strong> No service available at the moment. Try again later.
         </div>
+
+        <!-- Google Translate libraries -->
+        <script type="text/javascript">
+            function googleTranslateElementInit() {
+                new google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    layout: google.translate.TranslateElement.FloatPosition.BOTTOM_RIGHT,
+                    autoDisplay: false,
+                    multilanguagePage: true,
+                    gaTrack: true,
+                    gaId: 'UA-51639325-1'
+                }, 'google_translate_element');
+            }
+        </script>
+        <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
         <!-- CDN included libraries -->
         <script src="//code.jquery.com/jquery-2.1.0.min.js"></script>

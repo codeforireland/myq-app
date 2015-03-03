@@ -54,6 +54,7 @@ gulp.task('scripts', function() {
 			'js/collections/**/*.js',
 			'js/views/**/*.js',
 			'js/routers/router.js',
+			'js/google-translate.js',
 			'js/app.js'
         ])
 		.pipe(jshint())
