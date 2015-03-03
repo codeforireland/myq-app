@@ -40,6 +40,6 @@ app.QueueListView = Backbone.View.extend({
         // Google Translate drop-down needs to move back
         // to be a child of the app-view when displaying
         // the queues view.
-        $('#google_translate_element').appendTo('.app-view');
+        $('#google_translate_element').appendTo('.app-view .container');
     }
 });

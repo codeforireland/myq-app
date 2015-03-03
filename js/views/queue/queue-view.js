@@ -68,7 +68,7 @@ app.QueueView = Backbone.View.extend({
             if(!self.model.get('isOpen')) {
                 $('#google_translate_element').appendTo('.queue-view .details');
             } else {
-                $('#google_translate_element').appendTo('.app-view');
+                $('#google_translate_element').appendTo('.app-view .container');
             }
         });
 

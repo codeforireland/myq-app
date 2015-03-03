@@ -175,7 +175,7 @@
         }
 
         .card {
-            margin: 7px;
+            margin: 7px 7px 0 7px;
 
             .content {
                 @include border-radius(3px);
