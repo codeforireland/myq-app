@@ -96,20 +96,17 @@ body {
     top: 0 !important; /* Required to stop Google Translate toolbar pushing page down. */
 }
 
-iframe.goog-te-banner-frame {
-    display: none;
+iframe.goog-te-banner-frame, .goog-tooltip, .goog-tooltip:hover {
+    display: none !important;
+}
+
+.goog-text-highlight {
+    @include box-shadow(none !important);
+    background-color: transparent !important;
 }
 
 #google_translate_element {
     margin-right: 10px;
     margin-bottom: 10px;
     float: right;
-}
-
-.goog-tooltip {
-    display: none !important;
-}
-
-.goog-tooltip:hover {
-    display: none !important;
 }
