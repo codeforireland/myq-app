@@ -43,6 +43,9 @@ gulp.task('libraries', function() {
 gulp.task('images', function() {
 	gulp.src(['images/*.jpg','images/*.png'])
  		.pipe(rwi({ img: 'dist/images' }));
+
+	gulp.src(['images/favicon.ico'])
+ 		.pipe(gulp.dest('dist'));
 });
 
 // Scripts Task
