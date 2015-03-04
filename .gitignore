@@ -6,3 +6,4 @@ node_modules/
 build/
 deploy/
 dist/
+bower_components/

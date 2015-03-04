@@ -1,0 +1,22 @@
+{
+  "name": "myq-app",
+  "version": "2.0.0",
+  "homepage": "https://github.com/codeforireland/myq-app",
+  "authors": [
+    "Philip Murphy <philipjmurphy@gmail.com>"
+  ],
+  "description": "myq-app library dependencies",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mustache.js": "~1.0.0",
+    "jquery-autosize": "~1.18.17",
+    "bootstrap-maxlength": "~1.5.7"
+  }
+}
