@@ -171,17 +171,7 @@ Util.stopProgressLoader = function(element, loadTimer) {
 Util.responsiveBGImage = function(image, ext) {
     ext = ext || 'jpg';
 
-    var sheet;
-    for(var i = 0, len = document.styleSheets.length; i<len; i++) {
-        if(document.styleSheets[i].title === 'myq-app') {
-            sheet = document.styleSheets[i];
-            break;
-        }
-    }
-
-    if(sheet) {
-        sheet.ownerNode.remove();
-    }
+    Util.removeStyleSheet();
 
     var style = document.createElement('style');
 
@@ -206,19 +196,9 @@ Util.responsiveBGImage = function(image, ext) {
     /* Small devices (tablets, 768px [@screen-sm-min] and up) */
     sheet.insertRule('@media screen and (min-width : 768px) { ' + classSelector + ' { background-image: url("images/' + image + '-992.' + ext + '") !important; } }', 0);
 
-    sheet.insertRule(classSelector + ' { background-image: url("images/' + image + '-768.' + ext + '") !important;', 0);
+    sheet.insertRule(classSelector + ' { background-image: url("images/' + image + '-768.' + ext + '") !important; }', 0);
 };
 
 Util.removeStyleSheet = function() {
-    var sheet;
-    for(var i = 0, len = document.styleSheets.length; i<len; i++) {
-        if(document.styleSheets[i].title === 'myq-app') {
-            sheet = document.styleSheets[i];
-            break;
-        }
-    }
-
-    if(sheet) {
-        sheet.ownerNode.remove();
-    }
+    $('style[title="myq-app"]').remove();
 };
