@@ -8,11 +8,11 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie and http://myq.ie
 
-* Generate version number and copyright into files. Also, display within app.
-
 * Add social network links.
 
 * Update icons.
+
+* Think about generating my own version of bootstrap and switching over to font awesome.
 
 TODO
 ====

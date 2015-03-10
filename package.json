@@ -1,6 +1,6 @@
 {
   "name": "myq-app",
-  "version": "0.0.1",
+  "version": "2.0.1-20150310T000103",
   "repository": {
     "type": "git",
     "url": "git://github.com/codeforireland/myq-app.git"
@@ -8,6 +8,7 @@
   "devDependencies": {
     "del": "^1.1.1",
     "gulp": "^3.8.10",
+    "gulp-bump": "^0.2.2",
     "gulp-compass": "^2.0.3",
     "gulp-concat": "^2.4.3",
     "gulp-copy": "0.0.2",
@@ -22,5 +23,10 @@
     "gulp-rwi": "^1.0.4",
     "gulp-uglify": "^1.1.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "animate.css": "^3.1.1",
+    "bootstrap-growl": "^2.0.0",
+    "jquery-autosize": "^1.18.18",
+    "mustache": "^1.1.0"
+  }
 }

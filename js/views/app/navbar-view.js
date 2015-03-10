@@ -14,16 +14,6 @@ app.NavbarView = Backbone.View.extend({
 
     render: function () {
         this.$el.mustache(this.template);
-
-        //$(window).scroll($.proxy(this.fadeNavBarOnScroll, this));
-    },
-
-    fadeNavBarOnScroll: function() {
-        var opacity = Math.min(Math.max(document.body.scrollTop*2/100, 0.5), 0.9);
-        var backgroundColor = this.$el.css('background-color');
-
-        this.$el.css('background-color',  backgroundColor.replace(/,\s([^,]+)$/, ', ' + opacity + ')'));
-        this.$('.title').css('opacity', opacity);
     },
 
     menuItemSelected: function(e) {

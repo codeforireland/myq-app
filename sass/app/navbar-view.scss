@@ -44,6 +44,9 @@
         }
 
         .navbar-toggle {
+            padding: 3px 15px;
+
+
             border-color: transparent;
 
             @include transform(rotate(90deg));
@@ -57,13 +60,19 @@
                 @include transform(rotate(0deg));
             }
 
-            .icon-bar {
-                background-color: $button-color;
+            i {
+                font-size: 24px;
+
+                color: $button-color;
             }
         }
     }
 
     .navbar-collapse {
         border-left: 1px solid $navbar-border-color;
+
+        li:last-child {
+            margin-right: 15px;
+        }
     }
 }

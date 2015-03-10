@@ -1,6 +1,9 @@
 var PRODUCTION = true; // Change to false for a debug build
+var APP_VERSION = '2.0.1-' + (new Date().toISOString().replace(/[\:\-]/g, '').split('.')[0]);
+var COPYRIGHT = ' - Code for Ireland © ' + new Date().getUTCFullYear();
 
-var compass = require('gulp-compass'),
+var bump = require('gulp-bump'),
+    compass = require('gulp-compass'),
     concat = require('gulp-concat'),
     del = require('del'),
 	gulp = require('gulp'),
@@ -17,26 +20,34 @@ var compass = require('gulp-compass'),
 
 var onError = notify.onError("Error: <%= error.message %>");
 
+// Increment version.
+gulp.task('bump-version', function() {
+	gulp.src('*.json')
+		.pipe(bump({version: APP_VERSION}))
+		.pipe(gulp.dest('.'));
+});
+
 // Copy Libraries Task
 gulp.task('libraries', function() {
 	gulp.src('lib/**/*')
     	.pipe(gulp.dest('dist/lib'));
 
     // Copy Bower resources.
-	gulp.src('bower_components/animate.css/animate.min.css')
-    	.pipe(gulp.dest('dist/lib/animate.css/3.1.1'));
-
-	gulp.src('bower_components/bootstrap.growl/dist/bootstrap-growl.min.js')
-    	.pipe(gulp.dest('dist/lib/bootstrap.growl/2.0.0'));
-
 	gulp.src('bower_components/bootstrap-maxlength/bootstrap-maxlength.min.js')
-    	.pipe(gulp.dest('dist/lib/bootstrap-maxlength/1.5.7'));
+    	.pipe(gulp.dest('dist/lib/bootstrap-maxlength/'));
 
-	gulp.src('bower_components/jquery-autosize/jquery.autosize.min.js')
-    	.pipe(gulp.dest('dist/lib/jquery-autosize/1.18.17'));
+    // Copy Node resources.
+	gulp.src('node_modules/animate.css/animate.min.css')
+    	.pipe(gulp.dest('dist/lib/animate.css/'));
 
-	gulp.src('bower_components/mustache.js/mustache.min.js')
-    	.pipe(gulp.dest('dist/lib/mustache.js/1.0.0'));
+	gulp.src('node_modules/bootstrap-growl/dist/bootstrap-growl.min.js')
+    	.pipe(gulp.dest('dist/lib/bootstrap.growl/'));
+
+	gulp.src('node_modules/mustache/mustache.min.js')
+    	.pipe(gulp.dest('dist/lib/mustache/'));
+
+	gulp.src('node_modules/jquery-autosize/jquery.autosize.min.js')
+    	.pipe(gulp.dest('dist/lib/jquery-autosize/'));
 });
 
 // Image Processing Task
@@ -45,7 +56,7 @@ gulp.task('images', function() {
  		.pipe(rwi({ img: 'dist/images' }));
 
 	gulp.src(['images/favicon.ico'])
- 		.pipe(gulp.dest('dist'));
+ 		.pipe(gulp.dest('dist/images'));
 });
 
 // Scripts Task
@@ -88,7 +99,7 @@ gulp.task('styles', function(callback) {
 });
 
 // HTML Task
-gulp.task('html', ['styles', 'scripts'], function() {
+gulp.task('html', ['bump-version', 'styles', 'scripts'], function() {
 	gulp.src('templates/*.html')
 	    .pipe(htmlmin({
 	    	collapseWhitespace: PRODUCTION,
@@ -96,6 +107,7 @@ gulp.task('html', ['styles', 'scripts'], function() {
 	    	processScripts: ['x-tmpl-mustache']
 	    }))
 		.on('error', onError)
+		.pipe(replace(/APP_VERSION/, APP_VERSION + COPYRIGHT))
 	    .pipe(gulp.dest('dist/templates'))
 		.pipe(livereload());
 
