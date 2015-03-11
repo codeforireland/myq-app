@@ -8,8 +8,6 @@ DOING
 
 Latest changes deployed to http://dev.myq.ie and http://myq.ie
 
-* Add social network links.
-
 * Update icons.
 
 * Think about generating my own version of bootstrap and switching over to font awesome.

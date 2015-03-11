@@ -14,8 +14,7 @@
                 padding-top: 200px;
 
                 .title-holder {
-                    background-color: rgba(0,0,0, 0.2);
-                    border-radius: 4px;
+                    background-color: rgba(0, 0, 0, 0.4);
                     padding: 10px;
                 }
 
@@ -36,6 +35,7 @@
                         float: right;
 
                         margin-left: 25px;
+                        margin-top: -2px;
 
                         font-size: $title-font-size + 5;
 
