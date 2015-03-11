@@ -2,6 +2,7 @@ app.QueueModel = Backbone.Model.extend({
 
     initialize: function() {
         this.isOpen();
+        this.showSocialLinks();
     },
 
     url: function() {
@@ -73,5 +74,12 @@ app.QueueModel = Backbone.Model.extend({
         } else {
             this.set('isOpen', false);
         }
+    },
+
+    showSocialLinks: function() {
+        var name = this.get('queueInfo').name;
+
+        // Just hard-code for the moment.
+        this.set('socialLinks', name === 'GNIB' || name === 'INIS');
     }
 });

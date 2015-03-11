@@ -17,7 +17,7 @@ app.QueueView = Backbone.View.extend({
     REFRESH_TIME: 1000 * 120, // Refresh stats every 2 minutes from server.
 
     events: {
-        'click .header .status span': 'toggleDetails',
+        'click .header .status .glyphicon-info-sign': 'toggleDetails',
 
         'click .service-form .submit' : 'serviceSubmit',
         'keydown .service-form input' : 'serviceSubmitOnKeys',
@@ -101,7 +101,7 @@ app.QueueView = Backbone.View.extend({
         Util.responsiveBGImage(queue);
 
         if(!this.model.get('isOpen')) {
-            this.$('.status span').css('visibility', 'hidden');
+            this.$('.status .glyphicon-info-sign').css('visibility', 'hidden');
             this.$('.details').show();
             this.$('.inner-content .wait-time').hide();
             this.$('.inner-content .notification.estimated').hide();
@@ -259,7 +259,7 @@ app.QueueView = Backbone.View.extend({
     },
 
     toggleDetails: function() {
-        this.$('.header .status span').toggleClass('rotate');
+        this.$('.header .status .glyphicon-info-sign').toggleClass('rotate');
         var isOpen = this.$('.details').slideToggle().toggleClass('opened').is('.opened');
 
         if (isOpen) {

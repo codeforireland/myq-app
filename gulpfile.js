@@ -1,5 +1,5 @@
 var PRODUCTION = true; // Change to false for a debug build
-var APP_VERSION = '2.0.1-' + (new Date().toISOString().replace(/[\:\-]/g, '').split('.')[0]);
+var APP_VERSION = '2.0.2-' + (new Date().toISOString().replace(/[\:\-]/g, '').split('.')[0]);
 var COPYRIGHT = ' - Code for Ireland © ' + new Date().getUTCFullYear();
 
 var bump = require('gulp-bump'),
@@ -31,6 +31,9 @@ gulp.task('bump-version', function() {
 gulp.task('libraries', function() {
 	gulp.src('lib/**/*')
     	.pipe(gulp.dest('dist/lib'));
+
+	gulp.src('fonts/**/*')
+    	.pipe(gulp.dest('dist/fonts'));
 
     // Copy Bower resources.
 	gulp.src('bower_components/bootstrap-maxlength/bootstrap-maxlength.min.js')

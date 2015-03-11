@@ -35,7 +35,11 @@
                     span {
                         float: right;
 
-                        font-size: $title-font-size;
+                        margin-left: 25px;
+
+                        font-size: $title-font-size + 5;
+
+                        color: $header-font-color;
 
                         cursor: pointer;
 
@@ -133,6 +137,12 @@
                 td.time {
                     padding-left: 10px;
                 }
+            }
+
+            .social-links {
+                font-size: 48px;
+                line-height: 0;
+                margin-top: 20px;
             }
         }
     }
