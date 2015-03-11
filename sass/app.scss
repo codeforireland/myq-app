@@ -10,10 +10,6 @@
 
 @import 'queues/queues';
 
-::-webkit-scrollbar {
-    display: none;
-}
-
 body {
     background-color: $background-color;
 
@@ -22,6 +18,14 @@ body {
 
 img {
     -webkit-user-drag: none;
+}
+
+a { /* Remove dotted focus line on Firefox. */
+    outline: none !important;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 .mask {
